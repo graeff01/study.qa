@@ -1,11 +1,11 @@
 {
-  "name": "QA Tracker — Douglas Graeff",
-  "short_name": "QA Tracker",
-  "description": "Plano de estudos QA com streak e progresso",
+  "name": "QA Ops — Douglas Graeff",
+  "short_name": "QA Ops",
+  "description": "Sistema de estudos QA com Pomodoro, analytics e badges",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0e0f11",
-  "theme_color": "#0e0f11",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
   "orientation": "portrait-primary",
   "icons": [
     {

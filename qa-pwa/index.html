@@ -167,27 +167,39 @@ body::before{
 .checkin-btn:disabled{background:var(--go);cursor:default;color:#fff}
 
 /* Heatmap */
-.heatmap-card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px;overflow:hidden}
-.hm-scroll{overflow-x:auto;padding-bottom:4px}
-.hm-inner{display:inline-flex;flex-direction:column;gap:0}
-.hm-month-row{display:flex;gap:3px;margin-bottom:3px;padding-left:20px}
-.hm-ml{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--tx4);width:14px;flex-shrink:0;text-align:center}
-.hm-body{display:flex;gap:4px}
-.hm-day-labels{display:flex;flex-direction:column;gap:3px;margin-right:4px;padding-top:1px}
-.hm-dl{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--tx4);height:14px;display:flex;align-items:center;line-height:1}
-.hm-cols{display:flex;gap:3px}
-.hm-col{display:flex;flex-direction:column;gap:3px}
-.hm-cell{
-  width:14px;height:14px;border-radius:2px;background:var(--bg3);
-  transition:transform .1s;flex-shrink:0;position:relative;
+.heatmap-card{
+  background:var(--bg2);border:1px solid var(--line);
+  border-radius:var(--r);padding:16px 16px 14px;margin-bottom:12px;overflow:visible;
 }
-.hm-cell:hover{transform:scale(1.3);z-index:10}
+.hm-scroll{overflow:hidden;padding-right:4px}
+.hm-scroll{overflow:hidden}
+.hm-inner{display:flex;flex-direction:column;width:100%}
+.hm-month-row{display:flex;margin-bottom:3px;padding-left:22px}
+.hm-ml{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--tx4);flex:1;text-align:left;white-space:nowrap;overflow:hidden}
+.hm-body{display:flex;gap:4px;width:100%}
+.hm-day-labels{display:flex;flex-direction:column;margin-right:4px;padding-top:1px;width:18px;flex-shrink:0}
+.hm-dl{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--tx4);display:flex;align-items:center;line-height:1}
+.hm-cols{display:flex;flex:1}
+.hm-col{display:flex;flex-direction:column}
+.hm-cell{
+  border-radius:2px;background:var(--bg3);
+  flex-shrink:0;transition:opacity .15s;
+}
+.hm-cell:hover{opacity:.7}
 .hm-cell.p1{background:rgba(59,130,246,0.15)}
 .hm-cell.p2{background:rgba(59,130,246,0.30)}
 .hm-cell.p3{background:rgba(59,130,246,0.55)}
 .hm-cell.p4{background:var(--brand)}
-.hm-cell.today{box-shadow:0 0 0 1.5px var(--brand2);border-radius:3px}
-.hm-cell.future{opacity:.2;pointer-events:none}
+.hm-cell.today{
+  box-shadow:inset 0 0 0 2px var(--brand2);
+  border-radius:3px;
+  animation:todayPulse 2.4s ease-in-out infinite;
+}
+@keyframes todayPulse{
+  0%,100%{box-shadow:inset 0 0 0 2px var(--brand2),0 0 0 0 rgba(96,165,250,0)}
+  50%{box-shadow:inset 0 0 0 2px var(--brand2),0 0 5px 2px rgba(96,165,250,.22)}
+}
+.hm-cell.future{opacity:.15;pointer-events:none}
 .hm-legend{display:flex;align-items:center;gap:5px;margin-top:10px;justify-content:flex-end}
 .hm-legend span{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--tx3)}
 .hm-lsq{width:10px;height:10px;border-radius:2px}
@@ -224,48 +236,10 @@ body::before{
 /* ════════════════════════════
    TIMER
 ════════════════════════════ */
-#pg-timer{position:relative;overflow:hidden}
+#pg-timer{position:relative;overflow:hidden;min-height:calc(100svh - 68px - var(--safe-bot) - var(--safe-top))}
 
-/* Animated mesh background */
-.timer-mesh{position:absolute;inset:-80px;pointer-events:none;z-index:0;overflow:hidden}
-.timer-mesh .blob{
-  position:absolute;border-radius:50%;
-  filter:blur(80px);opacity:0.12;
-  will-change:transform;
-}
-.timer-mesh .blob-1{
-  width:350px;height:350px;
-  background:radial-gradient(circle,#3b82f6,transparent 70%);
-  top:-80px;left:-60px;
-  animation:blobFloat1 25s ease-in-out infinite alternate;
-}
-.timer-mesh .blob-2{
-  width:280px;height:280px;
-  background:radial-gradient(circle,#6366f1,transparent 70%);
-  bottom:-40px;right:-80px;
-  animation:blobFloat2 20s ease-in-out infinite alternate;
-}
-.timer-mesh .blob-3{
-  width:200px;height:200px;
-  background:radial-gradient(circle,#06b6d4,transparent 70%);
-  top:50%;left:50%;transform:translate(-50%,-50%);
-  animation:blobFloat3 30s ease-in-out infinite alternate;
-}
-@keyframes blobFloat1{
-  0%{transform:translate(0,0) scale(1)}
-  50%{transform:translate(60px,40px) scale(1.15)}
-  100%{transform:translate(-30px,80px) scale(0.9)}
-}
-@keyframes blobFloat2{
-  0%{transform:translate(0,0) scale(1)}
-  50%{transform:translate(-50px,-30px) scale(1.1)}
-  100%{transform:translate(20px,-60px) scale(0.95)}
-}
-@keyframes blobFloat3{
-  0%{transform:translate(-50%,-50%) scale(1)}
-  50%{transform:translate(-30%,-60%) scale(1.2)}
-  100%{transform:translate(-70%,-40%) scale(0.85)}
-}
+/* Timer perspective canvas */
+#timerCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.9}
 
 .timer-wrap{display:flex;flex-direction:column;align-items:center;padding:16px 0 24px;position:relative;z-index:1}
 
@@ -375,10 +349,6 @@ body::before{
   opacity:0;pointer-events:none;transition:opacity .3s ease;overflow:hidden;
 }
 .fs-overlay.show{opacity:1;pointer-events:all}
-.fs-mesh{position:absolute;inset:-100px;pointer-events:none;z-index:0}
-.fs-mesh .blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.1;will-change:transform}
-.fs-mesh .blob-1{width:500px;height:500px;background:radial-gradient(circle,#3b82f6,transparent 70%);top:-150px;left:-100px;animation:blobFloat1 25s ease-in-out infinite alternate}
-.fs-mesh .blob-2{width:400px;height:400px;background:radial-gradient(circle,#6366f1,transparent 70%);bottom:-100px;right:-150px;animation:blobFloat2 20s ease-in-out infinite alternate}
 .fs-close{
   position:absolute;top:20px;right:20px;z-index:1;
   background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
@@ -423,6 +393,27 @@ body::before{
 }
 .fs-motiv.show{opacity:1}
 .fs-pomo-dots{display:flex;gap:8px;margin-bottom:20px;position:relative;z-index:1}
+
+/* Fullscreen warp canvas */
+#fsTimerCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* Motivational balloons */
+.motiv-balloon{
+  position:fixed;z-index:10001;
+  border-radius:18px;padding:14px 22px;
+  font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;
+  color:#fff;letter-spacing:.05em;text-align:center;pointer-events:none;
+  max-width:300px;white-space:nowrap;
+  box-shadow:0 8px 40px rgba(0,0,0,.5);
+  animation:balloonUp 5.5s cubic-bezier(.2,.8,.4,1) forwards;
+}
+@keyframes balloonUp{
+  0%  {opacity:0;transform:translateY(30px) scale(0.75)}
+  12% {opacity:1;transform:translateY(0) scale(1.05)}
+  20% {transform:translateY(0) scale(1)}
+  75% {opacity:1;transform:translateY(-60px)}
+  100%{opacity:0;transform:translateY(-130px) scale(0.95)}
+}
 
 /* ════════════════════════════
    PROGRESS
@@ -620,6 +611,114 @@ body::before{
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:999px}
+
+/* ════════════════════════════
+   INTENSITY SELECTOR
+════════════════════════════ */
+.intensity-sel{display:flex;gap:6px;margin-bottom:14px;justify-content:center}
+.intensity-btn{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.04em;
+  padding:6px 14px;border-radius:999px;
+  background:var(--bg3);border:1px solid var(--line);color:var(--tx3);
+  cursor:pointer;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.intensity-btn .ib-min{font-size:9px;opacity:.55;letter-spacing:.02em}
+.intensity-btn:hover{border-color:var(--line3);color:var(--tx2)}
+.intensity-btn.active.leve  {background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.3);color:var(--go2)}
+.intensity-btn.active.medio {background:var(--brand-bg);border-color:var(--brand-bd);color:var(--brand2)}
+.intensity-btn.active.intenso{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);color:#f87171}
+
+/* ════════════════════════════
+   COUNTDOWN OVERLAY
+════════════════════════════ */
+#cdOverlay{
+  position:absolute;inset:0;align-items:center;justify-content:center;
+  flex-direction:column;z-index:3;pointer-events:none;
+  background:rgba(9,9,11,0.35);border-radius:50%;
+}
+#cdNum{
+  font-family:'IBM Plex Mono',monospace;font-size:72px;font-weight:600;
+  color:var(--brand2);line-height:1;
+  animation:cdPulse .85s ease-in-out infinite;
+}
+#cdLbl{font-size:10px;color:var(--tx3);letter-spacing:.14em;text-transform:uppercase;margin-top:6px}
+@keyframes cdPulse{0%,100%{opacity:.65;transform:scale(.9)}50%{opacity:1;transform:scale(1.08)}}
+
+/* ════════════════════════════
+   MODAL OVERLAY
+════════════════════════════ */
+.modal-ov{
+  position:fixed;inset:0;z-index:9500;
+  background:rgba(9,9,11,0.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;transition:opacity .25s ease;
+}
+.modal-ov.show{opacity:1;pointer-events:all}
+.modal-box{
+  background:var(--bg2);border:1px solid var(--line2);border-radius:16px;
+  padding:28px 24px;width:100%;max-width:360px;
+  transform:translateY(24px) scale(.96);transition:transform .28s cubic-bezier(.2,.8,.4,1);
+}
+.modal-ov.show .modal-box{transform:translateY(0) scale(1)}
+.modal-title{
+  font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;
+  letter-spacing:.03em;margin-bottom:4px;text-align:center;
+}
+.modal-sub{font-size:12px;color:var(--tx3);text-align:center;margin-bottom:22px;min-height:18px}
+
+/* Star rating */
+.star-row{display:flex;justify-content:center;gap:10px;margin-bottom:24px}
+.star-btn{
+  font-size:30px;cursor:pointer;opacity:.25;transition:opacity .12s,transform .12s;
+  background:none;border:none;padding:2px;line-height:1;
+}
+.star-btn.on{opacity:1;transform:scale(1.1)}
+.star-btn:hover{opacity:.85}
+
+/* Session summary */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.sum-item{background:var(--bg3);border-radius:var(--r2);padding:12px;text-align:center}
+.sum-val{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--brand2);line-height:1;margin-bottom:4px}
+.sum-lbl{font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.07em}
+.sum-topics{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:22px}
+
+/* Journal modal */
+.journal-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.journal-tag{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;padding:4px 10px;
+  border-radius:999px;background:var(--bg3);border:1px solid var(--line);
+  color:var(--tx3);cursor:pointer;transition:all .18s;
+}
+.journal-tag.active{background:var(--brand-bg);border-color:var(--brand-bd);color:var(--brand2)}
+.journal-textarea{
+  width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--line2);
+  border-radius:var(--r2);padding:10px 12px;color:var(--tx);
+  font-family:'IBM Plex Sans',sans-serif;font-size:13px;
+  resize:none;outline:none;transition:border-color .18s;margin-bottom:16px;
+}
+.journal-textarea:focus{border-color:var(--brand-bd)}
+.journal-textarea::placeholder{color:var(--tx4)}
+
+/* Modal buttons */
+.modal-btn{
+  width:100%;padding:12px;border-radius:var(--r2);border:none;cursor:pointer;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;transition:all .18s;
+}
+.modal-btn.primary{background:var(--brand);color:#fff}
+.modal-btn.primary:hover{background:var(--brand2)}
+.modal-btn.secondary{background:var(--bg3);border:1px solid var(--line2);color:var(--tx2);margin-top:8px}
+.modal-btn.secondary:hover{border-color:var(--line3)}
+
+/* Journal open button */
+.journal-open-btn{
+  display:flex;align-items:center;gap:8px;
+  margin-top:20px;padding:10px 18px;border-radius:var(--r2);cursor:pointer;
+  background:var(--bg3);border:1px solid var(--line2);
+  font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--tx2);
+  letter-spacing:.06em;text-transform:uppercase;transition:all .18s;
+}
+.journal-open-btn:hover{border-color:var(--brand-bd);color:var(--brand2)}
 </style>
 </head>
 <body>
@@ -644,7 +743,7 @@ body::before{
 
 <!-- FULLSCREEN TIMER -->
 <div class="fs-overlay" id="fsOverlay">
-  <div class="fs-mesh"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
+  <canvas id="fsTimerCanvas"></canvas>
   <button class="fs-close" onclick="closeFS()">✕ fechar</button>
   <div class="fs-day" id="fsDayLabel">SESSÃO</div>
   <div class="fs-mission" id="fsMission">POMODORO</div>
@@ -778,11 +877,7 @@ body::before{
 
 <!-- ═══ TIMER ═══ -->
 <div class="page" id="pg-timer">
-  <div class="timer-mesh">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-  </div>
+  <canvas id="timerCanvas"></canvas>
 
   <button class="fs-btn" onclick="openFS()">
     <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
@@ -790,14 +885,17 @@ body::before{
   </button>
 
   <div class="timer-wrap">
+    <!-- Intensity selector -->
+    <div class="intensity-sel" id="intensitySel"></div>
+
     <!-- Topic selector -->
     <div class="topic-sel" id="topicSel"></div>
 
-    <!-- Pomodoro dots -->
+    <!-- Ultradian cycle dots -->
     <div class="pomo-dots" id="pomoDots">
       <div class="pomo-dot"></div><div class="pomo-dot"></div>
       <div class="pomo-dot"></div><div class="pomo-dot"></div>
-      <span class="pomo-label" id="pomoLabel">0/4 pomodoros</span>
+      <span class="pomo-label" id="pomoLabel">0/4 · ciclo ultradian</span>
     </div>
 
     <div class="timer-info">
@@ -826,6 +924,11 @@ body::before{
         <div class="ring-pct" id="rPct">0%</div>
         <div class="ring-label" id="rLabel">pronto para iniciar</div>
       </div>
+      <!-- Countdown overlay -->
+      <div id="cdOverlay" style="display:none">
+        <div id="cdNum"></div>
+        <div id="cdLbl">pronto?</div>
+      </div>
     </div>
 
     <div class="timer-btns">
@@ -840,15 +943,57 @@ body::before{
       </button>
     </div>
 
-    <div class="notes-wrap">
-      <div class="notes-label">Notas da sessão</div>
-      <textarea class="notes-input" id="sessionNotes" rows="2" placeholder="O que está estudando? Anote aqui..."></textarea>
-    </div>
-
     <!-- Session history -->
     <div class="session-list" id="sessionList">
       <div class="sec-label" style="margin-top:20px">Últimas sessões</div>
     </div>
+
+    <!-- Daily journal button -->
+    <button class="journal-open-btn" onclick="openJournal()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Registrar Dia
+    </button>
+  </div>
+</div>
+
+<!-- ═══ QUALITY + SUMMARY MODAL ═══ -->
+<div class="modal-ov" id="qualModal">
+  <div class="modal-box">
+    <!-- Step 1: Quality rating -->
+    <div id="qualStep">
+      <div class="modal-title">Como foi essa sessão?</div>
+      <div class="modal-sub">Avalie sua concentração e foco</div>
+      <div class="star-row" id="starRow">
+        <button class="star-btn" onclick="selectStar(1)">⭐</button>
+        <button class="star-btn" onclick="selectStar(2)">⭐</button>
+        <button class="star-btn" onclick="selectStar(3)">⭐</button>
+        <button class="star-btn" onclick="selectStar(4)">⭐</button>
+        <button class="star-btn" onclick="selectStar(5)">⭐</button>
+      </div>
+      <button class="modal-btn primary" onclick="submitQuality()">Confirmar</button>
+      <button class="modal-btn secondary" onclick="selectStar(3);submitQuality()">Pular</button>
+    </div>
+    <!-- Step 2: Summary -->
+    <div id="sumStep" style="display:none">
+      <div class="modal-title" id="sumTitle">Pomodoro completo! 🍅</div>
+      <div class="modal-sub" id="sumSub"></div>
+      <div class="summary-grid" id="sumGrid"></div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tx3);text-align:center;margin-bottom:10px" id="sumMode"></div>
+      <div class="sum-topics" id="sumTopics"></div>
+      <button class="modal-btn primary" onclick="closeQualModal()">Continuar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DAILY JOURNAL MODAL ═══ -->
+<div class="modal-ov" id="journalModal">
+  <div class="modal-box">
+    <div class="modal-title">📓 Diário de Estudo</div>
+    <div class="modal-sub" id="journalDate"></div>
+    <div class="journal-tags" id="journalTags"></div>
+    <textarea class="journal-textarea" id="journalText" rows="4" placeholder="O que você estudou hoje? Principais aprendizados, dificuldades, insights..."></textarea>
+    <button class="modal-btn primary" onclick="saveJournal()">Salvar</button>
+    <button class="modal-btn secondary" onclick="closeJournal()">Cancelar</button>
   </div>
 </div>
 
@@ -907,7 +1052,7 @@ body::before{
 
   <div class="scrd">
     <div class="srow">
-      <div><div class="s-lb">Pomodoro (min)</div><div class="s-sb" id="pomoLbl">25 minutos de foco</div></div>
+      <div><div class="s-lb">Pomodoro (min)</div><div class="s-sb" id="pomoLbl">Controlado pela intensidade no timer</div></div>
       <div style="display:flex;align-items:center;gap:8px">
         <button class="step" onclick="chPomo(-5)">−</button>
         <span id="pomoNum" style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;min-width:20px;text-align:center">25</span>
@@ -1034,13 +1179,19 @@ function loadData() {
         sessions: [],
         skillChecks: {},
         badges: [],
+        journals: [],
         ctflDate: '',
         pomoDuration: 25,
         breakDuration: 5,
-        longBreakDuration: 15,
+        longBreakDuration: 20,
         notifEnabled: false,
       };
     }
+  }
+  // Migrate existing data: add missing fields
+  if (d) {
+    if (!d.journals) d.journals = [];
+    if (!d.longBreakDuration || d.longBreakDuration < 20) d.longBreakDuration = 20;
   }
   return d || {
     studied: [],
@@ -1051,10 +1202,11 @@ function loadData() {
     sessions: [],
     skillChecks: {},
     badges: [],
+    journals: [],
     ctflDate: '',
     pomoDuration: 25,
     breakDuration: 5,
-    longBreakDuration: 15,
+    longBreakDuration: 20,
     notifEnabled: false,
   };
 }
@@ -1079,6 +1231,44 @@ const TOPICS = [
   {id:'mobile', label:'Mobile', emoji:'📱'},
   {id:'livre', label:'Livre', emoji:'📝'},
 ];
+
+// ═══════════════════════════════════════════════════
+// INTENSITY (Huberman — ultradian rhythm adaptation)
+// ═══════════════════════════════════════════════════
+const INTENSITY = [
+  {id:'leve',   label:'Leve',   emoji:'🌱', min:20, desc:'revisão'},
+  {id:'medio',  label:'Médio',  emoji:'⚡', min:25, desc:'padrão'},
+  {id:'intenso',label:'Intenso',emoji:'🔥', min:45, desc:'ultradian'},
+];
+
+function getIntensityMin() {
+  const opt = INTENSITY.find(i => i.id === (TS.intensity || 'medio'));
+  return opt ? opt.min : 25;
+}
+
+function renderIntensity() {
+  const el = document.getElementById('intensitySel');
+  if (!el) return;
+  el.innerHTML = '';
+  INTENSITY.forEach(opt => {
+    const btn = document.createElement('button');
+    const isActive = TS.intensity === opt.id;
+    btn.className = 'intensity-btn' + (isActive ? ' active ' + opt.id : '');
+    btn.innerHTML = `${opt.emoji} ${opt.label}<span class="ib-min">${opt.min}min</span>`;
+    btn.title = opt.desc;
+    btn.onclick = () => {
+      if (TS.run) { showToast('⚠️','Pause o timer antes de mudar a intensidade'); return; }
+      TS.intensity = opt.id;
+      D.pomoDuration = opt.min;
+      TS.total = opt.min * 60;
+      TS.el = 0;
+      save();
+      renderIntensity();
+      updateTimerUI();
+    };
+    el.appendChild(btn);
+  });
+}
 
 const SCHED = [
   {day:'Dom', off:true,  total:0, label:'Descanso',              blocks:[]},
@@ -1158,6 +1348,9 @@ const BADGES = [
   {id:'days_30', emoji:'📆', name:'30 Dias', desc:'30 dias de estudo total'},
   {id:'days_100', emoji:'💯', name:'100 Dias', desc:'100 dias de estudo total'},
   {id:'all_months', emoji:'🗓️', name:'12 Meses', desc:'Completou os 12 meses'},
+  {id:'quality_10', emoji:'💎', name:'Qualidade Premium', desc:'10 sessões com nota 5 estrelas'},
+  {id:'journal_7',  emoji:'📓', name:'Diário Consistente', desc:'7 registros no diário'},
+  {id:'ultradian_1',emoji:'🧠', name:'Ultradian', desc:'Completou um ciclo ultradian (4 pomodoros)'},
 ];
 
 function getTotalHours() {
@@ -1191,6 +1384,9 @@ function checkBadges() {
     sessions_10: D.sessions.length >= 10, sessions_50: D.sessions.length >= 50,
     days_30: D.studied.length >= 30, days_100: D.studied.length >= 100,
     all_months: D.monthsDone.length >= 12,
+    quality_10: D.sessions.filter(s => s.quality === 5).length >= 10,
+    journal_7:  (D.journals || []).length >= 7,
+    ultradian_1: D.sessions.reduce((a, s) => a + (s.pomodoros || 0), 0) >= 4,
   };
   for (const [id, cond] of Object.entries(checks)) {
     if (cond && !D.badges.includes(id)) {
@@ -1299,9 +1495,10 @@ function getWeekHours() {
 // CHECK-IN
 // ═══════════════════════════════════════════════════
 function checkToday() {
-  if (D.studied.includes(TODAY)) return;
-  D.studied.push(TODAY); save();
   const btn = document.getElementById('cibtn');
+  if (D.studied.includes(TODAY) || btn.disabled) return;
+  btn.disabled = true; // immediate guard — prevents double-tap/click race
+  D.studied.push(TODAY); save();
   const r = btn.getBoundingClientRect();
   motiv(MV_CHECK, r.left + r.width/2, r.top + r.height/2);
   checkBadges();
@@ -1367,13 +1564,22 @@ function renderHome() {
   // Weekly chart
   renderWeekChart(weekH);
 
-  // Readiness
-  const ebacPct = D.ebacDone.filter(Boolean).length / 10;
+  // Readiness — ebac 35% + hours 25% + skills 25% + quality 15%
+  const ebacPct  = D.ebacDone.filter(Boolean).length / 10;
   const hoursPct = Math.min(1, totalH / 500);
   const skillPct = getAvgSkillCompletion();
-  const readiness = Math.round((ebacPct * 40 + hoursPct * 30 + skillPct * 30));
+  const qualSess = D.sessions.filter(s => s.quality);
+  const qualAvg  = qualSess.length ? qualSess.reduce((a, s) => a + s.quality, 0) / qualSess.length : 0;
+  const qualPct  = qualAvg / 5;
+  const readiness = Math.round(ebacPct * 35 + hoursPct * 25 + skillPct * 25 + qualPct * 15);
   document.getElementById('readinessPct').textContent = readiness + '%';
-  document.getElementById('readinessFill').style.width = readiness + '%';
+  const rfill = document.getElementById('readinessFill');
+  rfill.style.width = readiness + '%';
+  rfill.style.background = readiness >= 70
+    ? 'linear-gradient(90deg,var(--go),var(--go2))'
+    : readiness >= 40
+      ? 'linear-gradient(90deg,var(--warn),var(--warn2))'
+      : 'linear-gradient(90deg,var(--danger),#f97316)';
   document.getElementById('rdEbac').textContent = Math.round(ebacPct * 100) + '%';
   document.getElementById('rdHours').textContent = Math.round(hoursPct * 100) + '%';
   document.getElementById('rdSkills').textContent = Math.round(skillPct * 100) + '%';
@@ -1416,19 +1622,38 @@ function renderHeatmap() {
   const dayLblsEl = document.getElementById('hmDayLbls');
   colsEl.innerHTML = ''; monthsEl.innerHTML = ''; dayLblsEl.innerHTML = '';
 
+  // Dynamic cell sizing — fills width but capped so height stays compact
+  const LABEL_W = 22;
+  const CARD_PAD = 32; // 16px padding each side
+  const COL_GAP = 2;
+  const ROW_GAP = 2;
+  const availW = window.innerWidth - LABEL_W - CARD_PAD - 4;
+  const cellW = Math.max(7, Math.floor((availW - (WEEKS - 1) * COL_GAP) / WEEKS));
+  const cellH = Math.min(14, cellW);
+
+  // Apply dynamic gaps to containers
+  colsEl.style.gap = COL_GAP + 'px';
+  document.getElementById('hmDayLbls').style.gap = ROW_GAP + 'px';
+
   ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].forEach((d, i) => {
     const el = document.createElement('div');
     el.className = 'hm-dl';
-    el.textContent = (i%2===1) ? d.slice(0,3) : '';
+    el.style.height = cellH + 'px';
+    el.textContent = (i % 2 === 1) ? d.slice(0,3) : '';
     dayLblsEl.appendChild(el);
   });
 
+  // Month label widths = cellW + colGap per week
+  monthsEl.style.gap = COL_GAP + 'px';
+  monthsEl.style.paddingLeft = (LABEL_W + 4) + 'px';
   let lastMonth = -1;
   for (let w = 0; w < WEEKS; w++) {
     const d = new Date(start); d.setDate(start.getDate() + w*7);
     const m = d.getMonth();
     const el = document.createElement('div');
     el.className = 'hm-ml';
+    el.style.width = cellW + 'px';
+    el.style.flexShrink = '0';
     if (m !== lastMonth) {
       el.textContent = d.toLocaleDateString('pt-BR',{month:'short'}).slice(0,3);
       lastMonth = m;
@@ -1439,24 +1664,29 @@ function renderHeatmap() {
   for (let w = 0; w < WEEKS; w++) {
     const col = document.createElement('div');
     col.className = 'hm-col';
+    col.style.gap = ROW_GAP + 'px';
+    col.style.width = cellW + 'px';
+    col.style.flexShrink = '0';
     for (let dw = 0; dw < 7; dw++) {
       const d = new Date(start); d.setDate(start.getDate() + w*7 + dw);
       const key = toKey(d);
       const cell = document.createElement('div');
       cell.className = 'hm-cell';
+      cell.style.width = cellW + 'px';
+      cell.style.height = cellH + 'px';
       if (d > now) { cell.classList.add('future'); }
       else if (set.has(key)) {
-        // Intensity based on session hours
         const mins = D.sessions.filter(s => s.date === key).reduce((a, s) => a + (s.minutes||0), 0);
         if (mins >= 180) cell.classList.add('p4');
         else if (mins >= 120) cell.classList.add('p3');
         else if (mins >= 60) cell.classList.add('p2');
         else cell.classList.add('p1');
-        // Fallback: if studied but no sessions, show p1
         if (mins === 0) cell.classList.add('p1');
       }
       if (key === TODAY) cell.classList.add('today');
-      cell.title = key;
+      const cellMins = D.sessions.filter(s => s.date === key).reduce((a, s) => a + (s.minutes||0), 0);
+      const dateLabel = d.toLocaleDateString('pt-BR', {weekday:'short', day:'numeric', month:'short'});
+      cell.title = cellMins > 0 ? `${dateLabel} — ${Math.round(cellMins)}min` : dateLabel;
       col.appendChild(cell);
     }
     colsEl.appendChild(col);
@@ -1470,43 +1700,61 @@ function renderHeatmap() {
 let TS = {
   run: false, int: null, mint: null,
   el: 0, total: 0,
-  topic: 'ebac',
+  topics: ['ebac'],
   pomoCount: 0,
   onBreak: false,
   sessionStart: null,
   sessionMins: 0,
+  intensity: 'medio',
+  cdInt: null,
 };
 
 function initTimer() {
-  TS.total = D.pomoDuration * 60;
+  TS.total = getIntensityMin() * 60;
   TS.el = 0;
   TS.run = false;
   TS.onBreak = false;
   setPlayState(false);
   updateTimerUI();
+  renderIntensity();
   renderTopics();
   renderPomoDots();
+}
+
+function topicsLabel() {
+  if (!TS.topics.length) return 'Nenhum tópico';
+  return TS.topics.map(id => {
+    const t = TOPICS.find(x => x.id === id);
+    return t ? t.emoji + ' ' + t.label : id;
+  }).join(' · ');
 }
 
 function renderTopics() {
   const el = document.getElementById('topicSel'); el.innerHTML = '';
   TOPICS.forEach(t => {
     const btn = document.createElement('button');
-    btn.className = 'topic-btn' + (TS.topic === t.id ? ' active' : '');
+    btn.className = 'topic-btn' + (TS.topics.includes(t.id) ? ' active' : '');
     btn.textContent = t.emoji + ' ' + t.label;
     btn.onclick = () => {
-      TS.topic = t.id;
-      document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const tp = TOPICS.find(x => x.id === t.id);
-      document.getElementById('tiDesc').textContent = tp.emoji + ' ' + tp.label;
-      document.getElementById('fsMission').textContent = tp.label.toUpperCase();
+      const idx = TS.topics.indexOf(t.id);
+      if (idx >= 0) {
+        if (TS.topics.length > 1) TS.topics.splice(idx, 1); // keep at least 1
+      } else {
+        TS.topics.push(t.id);
+      }
+      renderTopics();
+      updateTopicLabels();
     };
     el.appendChild(btn);
   });
-  const tp = TOPICS.find(x => x.id === TS.topic);
-  document.getElementById('tiDesc').textContent = tp.emoji + ' ' + tp.label;
-  document.getElementById('fsMission').textContent = tp.label.toUpperCase();
+  updateTopicLabels();
+}
+
+function updateTopicLabels() {
+  document.getElementById('tiDesc').textContent = topicsLabel();
+  document.getElementById('fsMission').textContent = TS.topics.map(id => {
+    const t = TOPICS.find(x => x.id === id); return t ? t.label.toUpperCase() : id;
+  }).join(' + ');
 }
 
 function renderPomoDots() {
@@ -1518,7 +1766,7 @@ function renderPomoDots() {
     if (i < TS.pomoCount) d.classList.add('done');
     else if (i === TS.pomoCount && TS.run && !TS.onBreak) d.classList.add('active');
   });
-  document.getElementById('pomoLabel').textContent = TS.pomoCount + '/4 pomodoros';
+  document.getElementById('pomoLabel').textContent = TS.pomoCount + '/4 · ciclo ultradian';
 
   // Fullscreen dots
   const fsEl = document.getElementById('fsPomoDots'); fsEl.innerHTML = '';
@@ -1543,93 +1791,132 @@ function setPlayState(running) {
   document.getElementById('fsPlayBtn').classList.toggle('on-break', running && TS.onBreak);
 }
 
+// ── Countdown (Mel Robbins 5-sec rule) ────────────
+function startCountdown(cb) {
+  let n = 5;
+  const cdEl = document.getElementById('cdOverlay');
+  const cdNum = document.getElementById('cdNum');
+  cdEl.style.display = 'flex';
+  cdNum.textContent = n;
+  document.getElementById('tMainBtn').style.opacity = '0.4';
+  beep(500 + n * 40, 0.07, 0.07);
+  clearInterval(TS.cdInt);
+  TS.cdInt = setInterval(() => {
+    n--;
+    if (n <= 0) {
+      clearInterval(TS.cdInt); TS.cdInt = null;
+      cdEl.style.display = 'none';
+      document.getElementById('tMainBtn').style.opacity = '';
+      cb();
+    } else {
+      cdNum.textContent = n;
+      beep(500 + n * 40, 0.07, 0.07);
+    }
+  }, 1000);
+}
+
 function tToggle() {
-  TS.run = !TS.run;
-  setPlayState(TS.run);
+  // Pause if running
   if (TS.run) {
-    if (!TS.sessionStart && !TS.onBreak) TS.sessionStart = Date.now();
-    if (!TS.onBreak) motiv([{t:'FOCO. POMODORO INICIADO.',c:'#60a5fa'}]);
-    else motiv([{t:'PAUSA INICIADA. DESCANSE.',c:'#4ade80'}]);
-
-    // Motivational interval
-    const mintMs = (D.mintInterval||5) * 60 * 1000;
-    TS.mint = setInterval(() => {
-      if (!document.getElementById('motivTog').classList.contains('on')) return;
-      if (TS.onBreak) return;
-      const msg = MV_TIMER[Math.floor(Math.random()*MV_TIMER.length)];
-      const fs = document.getElementById('fsOverlay');
-      if (fs.classList.contains('show')) {
-        const el = document.getElementById('fsMotiv');
-        el.textContent = msg; el.classList.add('show');
-        setTimeout(() => el.classList.remove('show'), 4000);
-      } else {
-        motiv({t: msg, c:'#60a5fa'});
-      }
-    }, mintMs);
-
-    TS.int = setInterval(() => {
-      TS.el++;
-      if (!TS.onBreak) TS.sessionMins = (TS.sessionMins || 0) + 1/60;
-      updateTimerUI();
-      if (TS.el >= TS.total) {
-        clearInterval(TS.int); clearInterval(TS.mint);
-        if (TS.onBreak) {
-          // Break finished, start new pomodoro
-          TS.onBreak = false;
-          TS.el = 0;
-          TS.total = D.pomoDuration * 60;
-          setPlayState(false);
-          updateTimerUI();
-          renderPomoDots();
-          showToast('☕', 'Pausa encerrada! Pronto para mais um pomodoro?');
-          sendNotification('Pausa encerrada!', 'Hora de voltar ao foco 💪');
-        } else {
-          // Pomodoro finished
-          TS.pomoCount++;
-          const sessionMins = Math.round(TS.sessionMins || D.pomoDuration);
-          saveSession(sessionMins);
-          TS.sessionMins = 0;
-          motiv(MV_DONE);
-          sendNotification('Pomodoro completo! 🍅', 'Hora da pausa.');
-
-          // Auto check-in
-          if (!D.studied.includes(TODAY)) {
-            D.studied.push(TODAY); save();
-          }
-
-          if (TS.pomoCount >= 4) {
-            // Long break
-            TS.onBreak = true;
-            TS.el = 0;
-            TS.total = D.longBreakDuration * 60;
-            TS.pomoCount = 0;
-            showToast('🎉', 'Ciclo completo! Pausa longa de ' + D.longBreakDuration + 'min');
-          } else {
-            // Short break
-            TS.onBreak = true;
-            TS.el = 0;
-            TS.total = D.breakDuration * 60;
-            showToast('🍅', 'Pomodoro #' + TS.pomoCount + '! Pausa de ' + D.breakDuration + 'min');
-          }
-          setPlayState(false);
-          updateTimerUI();
-          renderPomoDots();
-          checkBadges();
-          renderHome();
-          renderSessionHistory();
-        }
-      }
-    }, 1000);
-  } else {
     clearInterval(TS.int); clearInterval(TS.mint);
+    TS.run = false;
+    setPlayState(false);
+    return;
   }
+  // Cancel countdown if active
+  if (TS.cdInt) {
+    clearInterval(TS.cdInt); TS.cdInt = null;
+    document.getElementById('cdOverlay').style.display = 'none';
+    document.getElementById('tMainBtn').style.opacity = '';
+    return;
+  }
+  // Fresh start — 5s countdown
+  if (TS.el === 0 && !TS.onBreak) {
+    startCountdown(_doStart);
+  } else {
+    _doStart();
+  }
+}
+
+function _doStart() {
+  setPlayState(true);
+  if (!TS.sessionStart && !TS.onBreak) TS.sessionStart = Date.now();
+  if (!TS.onBreak) motiv([{t:'FOCO. INICIADO.',c:'#60a5fa'}]);
+  else motiv([{t:'PAUSA. DESCANSE.',c:'#4ade80'}]);
+
+  const mintMs = (D.mintInterval||5) * 60 * 1000;
+  TS.mint = setInterval(() => {
+    if (!document.getElementById('motivTog').classList.contains('on')) return;
+    if (TS.onBreak) return;
+    const idx = Math.floor(Math.random() * BALLOON_DATA.length);
+    const bd = BALLOON_DATA[idx];
+    const fs = document.getElementById('fsOverlay');
+    if (fs.classList.contains('show')) showBalloon(bd.text, bd.grad, true);
+    else showBalloon(bd.text, bd.grad, false);
+  }, mintMs);
+
+  TS.int = setInterval(() => {
+    TS.el++;
+    if (!TS.onBreak) TS.sessionMins = (TS.sessionMins || 0) + 1/60;
+    updateTimerUI();
+    if (TS.el >= TS.total) {
+      clearInterval(TS.int); clearInterval(TS.mint);
+      if (TS.onBreak) {
+        // Break finished
+        TS.onBreak = false;
+        TS.el = 0;
+        TS.total = getIntensityMin() * 60;
+        setPlayState(false);
+        updateTimerUI();
+        renderPomoDots();
+        beep(660, 0.4, 0.12);
+        showToast('☕', 'Pausa encerrada! Pronto para mais um pomodoro?');
+        sendNotification('Pausa encerrada!', 'Hora de voltar ao foco 💪');
+      } else {
+        // Pomodoro finished
+        TS.pomoCount++;
+        const sessionMins = Math.round(TS.sessionMins || getIntensityMin());
+        saveSession(sessionMins);
+        TS.sessionMins = 0;
+        pomodoroDoneSound();
+        motiv(MV_DONE);
+        sendNotification('Pomodoro completo! 🍅', 'Hora da pausa.');
+
+        if (!D.studied.includes(TODAY)) { D.studied.push(TODAY); save(); }
+
+        if (TS.pomoCount >= 4) {
+          // Ultradian cycle complete — long break
+          TS.onBreak = true;
+          TS.el = 0;
+          TS.total = D.longBreakDuration * 60;
+          TS.pomoCount = 0;
+          showToast('🧠', 'Ciclo ultradian completo! Pausa de ' + D.longBreakDuration + 'min — saia da cadeira');
+          motiv([{t:'CICLO ULTRADIAN COMPLETO 🧠',c:'#4ade80'}]);
+        } else {
+          TS.onBreak = true;
+          TS.el = 0;
+          TS.total = D.breakDuration * 60;
+          showToast('🍅', 'Pomodoro #' + TS.pomoCount + '! Pausa de ' + D.breakDuration + 'min');
+        }
+        setPlayState(false);
+        updateTimerUI();
+        renderPomoDots();
+        checkBadges();
+        renderHome();
+        renderSessionHistory();
+      }
+    }
+  }, 1000);
 }
 
 function tReset() {
   clearInterval(TS.int); clearInterval(TS.mint);
+  clearInterval(TS.cdInt); TS.cdInt = null;
+  document.getElementById('cdOverlay').style.display = 'none';
+  document.getElementById('tMainBtn').style.opacity = '';
   TS.onBreak = false;
   TS.el = 0;
-  TS.total = D.pomoDuration * 60;
+  TS.total = getIntensityMin() * 60;
   TS.sessionMins = 0;
   setPlayState(false);
   updateTimerUI();
@@ -1641,7 +1928,7 @@ function skipBreak() {
   clearInterval(TS.int); clearInterval(TS.mint);
   TS.onBreak = false;
   TS.el = 0;
-  TS.total = D.pomoDuration * 60;
+  TS.total = getIntensityMin() * 60;
   setPlayState(false);
   updateTimerUI();
   renderPomoDots();
@@ -1649,16 +1936,16 @@ function skipBreak() {
 }
 
 function saveSession(mins) {
-  D.sessions.push({
+  const sessionData = {
     date: TODAY,
-    topic: TS.topic,
+    topics: TS.topics.slice(),
     minutes: mins,
     pomodoros: 1,
-    notes: document.getElementById('sessionNotes').value || '',
+    intensity: TS.intensity || 'medio',
+    quality: null,
     ts: Date.now(),
-  });
-  save();
-  document.getElementById('sessionNotes').value = '';
+  };
+  showQualModal(sessionData);
 }
 
 function updateTimerUI() {
@@ -1700,21 +1987,47 @@ function renderSessionHistory() {
   const el = document.getElementById('sessionList');
   const recent = [...D.sessions].reverse().slice(0, 8);
   el.innerHTML = '<div class="sec-label" style="margin-top:20px">Últimas sessões</div>';
+
+  // Show today's journal entry if exists
+  const todayJournal = (D.journals || []).find(j => j.date === TODAY);
+  if (todayJournal) {
+    const jEl = document.createElement('div');
+    jEl.className = 'session-item';
+    jEl.style.cssText = 'background:rgba(59,130,246,0.05);border-color:var(--brand-bd);cursor:pointer';
+    const tagStr = (todayJournal.tags || []).map(id => {
+      const t = TOPICS.find(x => x.id === id); return t ? t.emoji : '';
+    }).join(' ');
+    const preview = todayJournal.text ? todayJournal.text.slice(0, 45) + (todayJournal.text.length > 45 ? '…' : '') : 'Sem texto';
+    jEl.innerHTML = `<span class="session-emoji">📓</span>
+      <div class="session-info">
+        <div class="session-topic">Diário de hoje ${tagStr}</div>
+        <div class="session-meta" style="color:var(--tx2)">${preview}</div>
+      </div>`;
+    jEl.onclick = () => openJournal();
+    el.appendChild(jEl);
+  }
+
   if (!recent.length) {
     el.innerHTML += '<div style="font-size:12px;color:var(--tx3);padding:8px 0">Nenhuma sessão registrada ainda</div>';
     return;
   }
+  const intensEmoji = {leve:'🌱', medio:'⚡', intenso:'🔥'};
   recent.forEach(s => {
-    const tp = TOPICS.find(t => t.id === s.topic) || {emoji:'📝', label:s.topic};
+    // support both legacy `topic` (string) and new `topics` (array)
+    const tids = s.topics || (s.topic ? [s.topic] : ['livre']);
+    const emojis = tids.map(id => { const t = TOPICS.find(x => x.id === id); return t ? t.emoji : '📝'; }).join('');
+    const labels = tids.map(id => { const t = TOPICS.find(x => x.id === id); return t ? t.label : id; }).join(' · ');
     const h = Math.floor(s.minutes / 60);
     const m = Math.round(s.minutes % 60);
     const durStr = h > 0 ? h + 'h' + (m > 0 ? m + 'min' : '') : m + 'min';
+    const qualStr = s.quality ? '⭐'.repeat(s.quality) : '';
+    const intStr = s.intensity ? (intensEmoji[s.intensity] || '') : '';
     const item = document.createElement('div');
     item.className = 'session-item';
-    item.innerHTML = `<span class="session-emoji">${tp.emoji}</span>
+    item.innerHTML = `<span class="session-emoji">${emojis}</span>
       <div class="session-info">
-        <div class="session-topic">${tp.label}</div>
-        <div class="session-meta">${s.date}${s.notes ? ' · ' + s.notes.slice(0,30) : ''}</div>
+        <div class="session-topic">${labels} ${intStr}</div>
+        <div class="session-meta">${s.date}${qualStr ? ' · ' + qualStr : ''}</div>
       </div>
       <div class="session-dur">${durStr}</div>`;
     el.appendChild(item);
@@ -1722,17 +2035,205 @@ function renderSessionHistory() {
 }
 
 // ═══════════════════════════════════════════════════
+// QUALITY MODAL + SESSION SUMMARY
+// ═══════════════════════════════════════════════════
+let _pendingSess = null;
+let _selQual = 0;
+
+function showQualModal(sessData) {
+  _pendingSess = sessData;
+  _selQual = 0;
+  document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('on'));
+  document.getElementById('qualStep').style.display = '';
+  document.getElementById('sumStep').style.display = 'none';
+  document.getElementById('qualModal').classList.add('show');
+}
+
+function selectStar(v) {
+  _selQual = v;
+  document.querySelectorAll('.star-btn').forEach((b, i) => b.classList.toggle('on', i < v));
+}
+
+function submitQuality() {
+  if (!_selQual) { showToast('⭐', 'Selecione uma nota para a sessão'); return; }
+  _pendingSess.quality = _selQual;
+  D.sessions.push(_pendingSess);
+  save();
+  _showSummaryStep(_pendingSess);
+}
+
+function _showSummaryStep(s) {
+  document.getElementById('qualStep').style.display = 'none';
+  document.getElementById('sumStep').style.display = '';
+  const h = Math.floor(s.minutes / 60), m = Math.round(s.minutes % 60);
+  const durStr = h > 0 ? h + 'h' + (m > 0 ? m + 'min' : '') : m + 'min';
+  const qualFeedback = s.quality <= 2 ? ' — pode mais!' : s.quality <= 4 ? ' — bom trabalho!' : ' — perfeito!';
+  const todaySess = D.sessions.filter(x => x.date === TODAY);
+  const todayMins = Math.round(todaySess.reduce((a, x) => a + (x.minutes || 0), 0));
+  const intensMap = {leve:'🌱 Leve', medio:'⚡ Médio', intenso:'🔥 Intenso'};
+
+  document.getElementById('sumTitle').textContent = 'Pomodoro completo! 🍅';
+  document.getElementById('sumSub').textContent = '⭐'.repeat(s.quality) + qualFeedback;
+  document.getElementById('sumGrid').innerHTML = `
+    <div class="sum-item"><div class="sum-val">${durStr}</div><div class="sum-lbl">Duração</div></div>
+    <div class="sum-item"><div class="sum-val">${s.quality}/5</div><div class="sum-lbl">Qualidade</div></div>
+    <div class="sum-item"><div class="sum-val">${todaySess.length}</div><div class="sum-lbl">Hoje</div></div>
+    <div class="sum-item"><div class="sum-val">${todayMins}min</div><div class="sum-lbl">Total hoje</div></div>
+  `;
+  document.getElementById('sumMode').textContent = intensMap[s.intensity] || '⚡ Médio';
+  document.getElementById('sumTopics').innerHTML = s.topics.map(id => {
+    const t = TOPICS.find(x => x.id === id);
+    return `<span class="chip b">${t ? t.emoji + ' ' + t.label : id}</span>`;
+  }).join('');
+}
+
+function closeQualModal() {
+  document.getElementById('qualModal').classList.remove('show');
+  _pendingSess = null;
+  checkBadges(); renderHome(); renderSessionHistory();
+}
+
+// ═══════════════════════════════════════════════════
+// DAILY JOURNAL
+// ═══════════════════════════════════════════════════
+let _journalActiveTags = [];
+
+function openJournal() {
+  const todayTopics = [...new Set(
+    D.sessions.filter(s => s.date === TODAY).flatMap(s => s.topics || [])
+  )];
+  _journalActiveTags = todayTopics.length ? todayTopics : TS.topics.slice();
+  document.getElementById('journalDate').textContent =
+    new Date().toLocaleDateString('pt-BR', {weekday:'long', day:'numeric', month:'long'});
+  renderJournalTags();
+  const existing = (D.journals || []).find(j => j.date === TODAY);
+  document.getElementById('journalText').value = existing ? existing.text : '';
+  document.getElementById('journalModal').classList.add('show');
+}
+
+function renderJournalTags() {
+  const el = document.getElementById('journalTags'); el.innerHTML = '';
+  TOPICS.forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'journal-tag' + (_journalActiveTags.includes(t.id) ? ' active' : '');
+    btn.textContent = t.emoji + ' ' + t.label;
+    btn.onclick = () => {
+      const i = _journalActiveTags.indexOf(t.id);
+      i >= 0 ? _journalActiveTags.splice(i, 1) : _journalActiveTags.push(t.id);
+      renderJournalTags();
+    };
+    el.appendChild(btn);
+  });
+}
+
+function saveJournal() {
+  if (!D.journals) D.journals = [];
+  const i = D.journals.findIndex(j => j.date === TODAY);
+  const entry = {
+    date: TODAY,
+    tags: _journalActiveTags.slice(),
+    text: document.getElementById('journalText').value,
+    ts: Date.now(),
+  };
+  i >= 0 ? D.journals.splice(i, 1, entry) : D.journals.push(entry);
+  save();
+  closeJournal();
+  showToast('📓', 'Diário registrado!');
+}
+
+function closeJournal() {
+  document.getElementById('journalModal').classList.remove('show');
+}
+
+// ═══════════════════════════════════════════════════
+// BALLOON MESSAGES
+// ═══════════════════════════════════════════════════
+const BALLOON_DATA = [
+  {text:'FOCO TOTAL 🧠',         grad:'linear-gradient(135deg,#3b82f6,#6366f1)', tip:'#3b82f6'},
+  {text:'VOCÊ ESTÁ EVOLUINDO ⚡', grad:'linear-gradient(135deg,#8b5cf6,#ec4899)', tip:'#8b5cf6'},
+  {text:'MAIS UM PASSO PRO CTFL 🏆', grad:'linear-gradient(135deg,#f59e0b,#ef4444)', tip:'#f59e0b'},
+  {text:'QUALIDADE SE CONSTRÓI ASSIM 💎', grad:'linear-gradient(135deg,#22c55e,#3b82f6)', tip:'#22c55e'},
+  {text:'CONSISTÊNCIA > INTENSIDADE 🔥', grad:'linear-gradient(135deg,#ef4444,#f59e0b)', tip:'#ef4444'},
+  {text:'CADA MINUTO CONTA ⏱️',   grad:'linear-gradient(135deg,#3b82f6,#22c55e)', tip:'#3b82f6'},
+  {text:'DOUGLAS, CONTINUA 💪',   grad:'linear-gradient(135deg,#6366f1,#8b5cf6)', tip:'#6366f1'},
+  {text:'PORTFÓLIO CRESCENDO 🚀', grad:'linear-gradient(135deg,#f59e0b,#22c55e)', tip:'#f59e0b'},
+  {text:'FUTURO QA SÊNIOR ✨',    grad:'linear-gradient(135deg,#ec4899,#8b5cf6)', tip:'#ec4899'},
+  {text:'ISTQB CHEGANDO 📋',      grad:'linear-gradient(135deg,#3b82f6,#f59e0b)', tip:'#3b82f6'},
+  {text:'MODO DEUS ATIVADO 👑',   grad:'linear-gradient(135deg,#facc15,#f59e0b)', tip:'#facc15'},
+  {text:'CÓDIGO + QUALIDADE 🛠️',  grad:'linear-gradient(135deg,#22c55e,#6366f1)', tip:'#22c55e'},
+];
+
+function showBalloon(text, grad, inFS) {
+  const balloon = document.createElement('div');
+  balloon.className = 'motiv-balloon';
+  balloon.style.background = grad;
+  balloon.textContent = text;
+  // Random horizontal position avoiding edges
+  const xPct = 8 + Math.random() * 55;
+  if (inFS) {
+    // Inside fullscreen overlay
+    balloon.style.position = 'absolute';
+    balloon.style.left = xPct + '%';
+    balloon.style.bottom = (140 + Math.random() * 80) + 'px';
+    balloon.style.zIndex = '10';
+    document.getElementById('fsOverlay').appendChild(balloon);
+  } else {
+    balloon.style.left = xPct + '%';
+    balloon.style.bottom = (80 + Math.random() * 60) + 'px';
+    document.body.appendChild(balloon);
+  }
+  setTimeout(() => balloon.remove(), 5600);
+}
+
+// ═══════════════════════════════════════════════════
+// STARFIELD (canvas — galaxy animation)
+// (old galaxy starfield removed — fullscreen now reuses the 3D warp renderer)
+
+// ═══════════════════════════════════════════════════
+// WEB AUDIO — beep on pomodoro complete
+// ═══════════════════════════════════════════════════
+function beep(freq, dur, vol) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = freq || 880;
+    o.type = 'sine';
+    g.gain.setValueAtTime(vol || 0.18, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + (dur || 0.4));
+    o.start(ctx.currentTime);
+    o.stop(ctx.currentTime + (dur || 0.4));
+  } catch(e) {}
+}
+function pomodoroDoneSound() {
+  setTimeout(() => beep(880, 0.3, 0.15), 0);
+  setTimeout(() => beep(1100, 0.3, 0.12), 320);
+  setTimeout(() => beep(1320, 0.5, 0.10), 640);
+}
+
+// ═══════════════════════════════════════════════════
 // FULLSCREEN
 // ═══════════════════════════════════════════════════
 function openFS() {
   document.getElementById('fsOverlay').classList.add('show');
+  requestAnimationFrame(() => {
+    if (!_fsc) initFSCanvas();
+    else { _fsc.width = window.innerWidth; _fsc.height = window.innerHeight; }
+  });
   if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(()=>{});
 }
 function closeFS() {
   document.getElementById('fsOverlay').classList.remove('show');
   if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(()=>{});
 }
-document.addEventListener('keydown', e => { if (e.key==='Escape') closeFS(); });
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeFS(); return; }
+  if (e.key === ' ' && (document.getElementById('fsOverlay').classList.contains('show') || document.getElementById('pg-timer').classList.contains('active'))) {
+    e.preventDefault(); tToggle();
+  }
+});
 
 // ═══════════════════════════════════════════════════
 // PROGRESS
@@ -1907,7 +2408,7 @@ function setCtflDate(val) {
 function resetD() {
   if (!confirm('Limpar todo o histórico? Essa ação não pode ser desfeita.')) return;
   D = {studied:[],monthsDone:[],ebacDone:Array(10).fill(false),hours:3,mintInterval:5,
-    sessions:[],skillChecks:{},badges:[],ctflDate:'',pomoDuration:25,breakDuration:5,longBreakDuration:15,notifEnabled:false};
+    sessions:[],skillChecks:{},badges:[],journals:[],ctflDate:'',pomoDuration:25,breakDuration:5,longBreakDuration:20,notifEnabled:false};
   save(); renderAll();
 }
 
@@ -1982,14 +2483,135 @@ function sp(id, btn) {
   document.getElementById('pg-'+id).classList.add('active');
   btn.classList.add('active');
   if (id === 'achieve') renderAchievements();
+  if (id === 'timer') {
+    requestAnimationFrame(() => {
+      if (_tc) _resizeTimerCanvas();
+      else initTimerBg();
+    });
+  }
 }
 
 // ═══════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════
+// TIMER PAGE — 3D PERSPECTIVE STARFIELD
+// ═══════════════════════════════════════════════════
+let _tc, _tx2d, _tStars = [], _tAnim = null;
+const T_STAR_COUNT = 180;
+const T_FOCAL = 320;
+
+function _newTStar(fresh) {
+  return {
+    x: (Math.random() - 0.5) * 1600,
+    y: (Math.random() - 0.5) * 1600,
+    z: fresh ? 800 + Math.random() * 400 : Math.random() * 1200,
+    px: 0, py: 0, // previous projected position
+  };
+}
+
+let _fsc = null, _fsx = null; // fullscreen warp canvas
+
+function _resizeTimerCanvas() {
+  const pg = document.getElementById('pg-timer');
+  if (_tc) {
+    _tc.width  = pg.offsetWidth  || window.innerWidth;
+    _tc.height = pg.offsetHeight || (window.innerHeight - 68);
+  }
+  if (_fsc) {
+    _fsc.width  = window.innerWidth;
+    _fsc.height = window.innerHeight;
+  }
+}
+
+function initTimerBg() {
+  _tc = document.getElementById('timerCanvas');
+  if (!_tc) return;
+  _tx2d = _tc.getContext('2d');
+  _resizeTimerCanvas();
+  _tStars = Array.from({length: T_STAR_COUNT}, () => _newTStar(false));
+  if (!_tAnim) _drawTimerBg();
+}
+
+function initFSCanvas() {
+  _fsc = document.getElementById('fsTimerCanvas');
+  if (!_fsc) return;
+  _fsx = _fsc.getContext('2d');
+  _fsc.width  = window.innerWidth;
+  _fsc.height = window.innerHeight;
+  // Make sure the animation loop is running
+  if (!_tAnim) _drawTimerBg();
+}
+
+// Render warp effect to a specific canvas context
+function _renderWarp(ctx, w, h) {
+  const cx = w / 2, cy = h / 2;
+  const warp = TS.run && !TS.onBreak;
+
+  ctx.fillStyle = warp ? 'rgba(9,9,11,0.22)' : 'rgba(9,9,11,0.55)';
+  ctx.fillRect(0, 0, w, h);
+
+  _tStars.forEach(s => {
+    if (s.z <= 1) return;
+    const sx  = (s.x / s.z)  * T_FOCAL + cx;
+    const sy  = (s.y / s.z)  * T_FOCAL + cy;
+    const ppx = (s.x / s.pz) * T_FOCAL + cx;
+    const ppy = (s.y / s.pz) * T_FOCAL + cy;
+    if (sx < -20 || sx > w + 20 || sy < -20 || sy > h + 20) return;
+
+    const depth  = 1 - s.z / 1200;
+    const radius = Math.max(0.3, depth * 2.2);
+    const alpha  = Math.max(0.05, depth * 0.85);
+
+    if (warp) {
+      ctx.beginPath();
+      ctx.moveTo(ppx, ppy);
+      ctx.lineTo(sx, sy);
+      ctx.strokeStyle = `rgba(200,215,255,${Math.min(alpha * 0.7, 0.6)})`;
+      ctx.lineWidth = radius * 0.7;
+      ctx.stroke();
+    }
+
+    ctx.beginPath();
+    ctx.arc(sx, sy, radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(230,235,255,${alpha})`;
+    ctx.fill();
+  });
+}
+
+function _drawTimerBg() {
+  _tAnim = requestAnimationFrame(_drawTimerBg);
+
+  const timerOn = document.getElementById('pg-timer').classList.contains('active');
+  const fsOn    = document.getElementById('fsOverlay').classList.contains('show');
+  if (!timerOn && !fsOn) return;
+
+  const spd = TS.run ? (TS.onBreak ? 2.5 : 9) : 1.2;
+
+  // ── UPDATE stars once per frame ──
+  _tStars.forEach(s => {
+    s.pz = s.z;
+    s.z -= spd;
+    if (s.z <= 1) Object.assign(s, _newTStar(true));
+  });
+
+  // ── RENDER to each active canvas ──
+  if (timerOn && _tc && _tx2d) _renderWarp(_tx2d, _tc.width, _tc.height);
+  if (fsOn && _fsc && _fsx)   _renderWarp(_fsx,  _fsc.width, _fsc.height);
+}
+
+// Resize + fullscreen change handler
+function _onViewportChange() {
+  _resizeTimerCanvas(); // handles both _tc and _fsc
+  renderHeatmap();
+}
+window.addEventListener('resize', _onViewportChange);
+document.addEventListener('fullscreenchange', () => setTimeout(_onViewportChange, 80));
+
+// ═══════════════════════════════════════════════════
 function renderAll() {
   renderHome();
   initTimer();
+  initTimerBg();
   renderSessionHistory();
   renderProgress();
   renderAchievements();
