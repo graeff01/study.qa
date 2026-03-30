@@ -872,6 +872,49 @@ body::before{
 .tl-col-arr.open{transform:rotate(90deg)}
 .tl-collapsible{max-height:0;overflow:hidden;transition:max-height .35s ease}
 .tl-collapsible.open{max-height:2000px}
+
+/* ════════════════════════════
+   SESSION MAP
+════════════════════════════ */
+.map-week{margin-bottom:22px}
+.map-week-hd{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;
+  padding:9px 14px;border-radius:var(--r2);
+  background:var(--bg2);border:1px solid var(--line2);
+  margin-bottom:10px;
+}
+.map-week-title{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--brand2)}
+.map-week-meta{display:flex;gap:10px;align-items:center}
+.map-week-stat{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tx3)}
+
+.map-day{margin-bottom:10px}
+.map-day-lbl{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tx3);
+  text-transform:uppercase;letter-spacing:.08em;
+  margin-bottom:5px;padding-left:2px;
+  display:flex;align-items:center;gap:7px;
+}
+.map-day-lbl::after{content:'';flex:1;height:1px;background:var(--line)}
+
+.map-sess{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 12px;margin-bottom:4px;
+  background:var(--bg2);border:1px solid var(--line);border-radius:var(--r2);
+}
+.map-sess-emoji{font-size:15px;line-height:1.3;flex-shrink:0;padding-top:1px}
+.map-sess-body{flex:1;min-width:0}
+.map-sess-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.map-sess-label{font-size:12px;font-weight:500;color:var(--tx);flex-shrink:0}
+.map-sess-dur{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--brand2);font-weight:600;flex-shrink:0}
+.map-sess-qual{font-size:10px;color:var(--warn2);margin-left:auto;white-space:nowrap;flex-shrink:0;padding-left:4px}
+.map-sess-recall{
+  font-size:11px;color:var(--tx2);margin-top:7px;line-height:1.6;
+  border-left:2px solid var(--brand-bd);padding-left:8px;font-style:italic;
+}
+.map-empty{
+  text-align:center;padding:48px 20px;
+  font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--tx3);line-height:2.2;
+}
 </style>
 </head>
 <body>
@@ -1177,34 +1220,21 @@ body::before{
   <!-- Overview strip -->
   <div class="prog-overview" id="progOverview"></div>
 
-  <!-- Sub-tabs -->
+  <!-- 2 tabs -->
   <div class="ptabs">
-    <button class="ptab active" id="pt-skills" onclick="showPTab('skills',this)">Habilidades</button>
-    <button class="ptab" id="pt-ebac"   onclick="showPTab('ebac',this)">EBAC</button>
-    <button class="ptab" id="pt-agenda" onclick="showPTab('agenda',this)">Agenda</button>
-    <button class="ptab" id="pt-data"   onclick="showPTab('data',this)">Analytics</button>
+    <button class="ptab active" onclick="showPTab('mapa',this)">Mapa</button>
+    <button class="ptab" onclick="showPTab('agenda',this)">Agenda</button>
   </div>
 
-  <!-- Tab: Habilidades -->
-  <div class="ptab-content active" id="ptab-skills">
-    <div id="skillCards"></div>
-  </div>
-
-  <!-- Tab: EBAC -->
-  <div class="ptab-content" id="ptab-ebac">
-    <div id="mgrid-wrap"></div>
-    <div id="ebacmods"></div>
+  <!-- Tab: Mapa (histórico de sessões) -->
+  <div class="ptab-content active" id="ptab-mapa">
+    <div id="sessionMap"></div>
   </div>
 
   <!-- Tab: Agenda -->
   <div class="ptab-content" id="ptab-agenda">
     <div id="wksched"></div>
     <div id="tlcont-wrap"></div>
-  </div>
-
-  <!-- Tab: Analytics -->
-  <div class="ptab-content" id="ptab-data">
-    <div id="analyticsSection"></div>
   </div>
 </div>
 
@@ -2458,12 +2488,9 @@ function showPTab(id, btn) {
 
 function renderProgress() {
   _renderProgOverview();
-  _renderSkillCards();
-  _renderMonthsGrid();
-  _renderEbacPhases();
+  _renderSessionMap();
   _renderCompactSchedule();
   _renderTimeline();
-  renderAnalytics();
 }
 
 function _renderProgOverview() {
@@ -2492,6 +2519,117 @@ function _renderProgOverview() {
   requestAnimationFrame(() => requestAnimationFrame(() => {
     el.querySelectorAll('.prog-ov-fill').forEach(b => b.style.width = b.dataset.p + '%');
   }));
+}
+
+function _renderSessionMap() {
+  const el = document.getElementById('sessionMap');
+  if (!el) return;
+
+  if (!D.sessions.length) {
+    el.innerHTML = `<div class="map-empty">Nenhuma sessão ainda<br>Complete um Pomodoro para ver o histórico aqui 🍅</div>`;
+    return;
+  }
+
+  // Sort desc by date then timestamp
+  const sorted = [...D.sessions].sort((a, b) => {
+    if (b.date !== a.date) return b.date > a.date ? 1 : -1;
+    return (b.ts || 0) - (a.ts || 0);
+  });
+
+  // Group by week start (Sunday)
+  const weekMap = new Map();
+  sorted.forEach(s => {
+    const d = new Date(s.date + 'T12:00:00');
+    const ws = new Date(d); ws.setDate(d.getDate() - d.getDay());
+    const wk = toKey(ws);
+    if (!weekMap.has(wk)) weekMap.set(wk, { start: ws, byDay: new Map() });
+    const g = weekMap.get(wk);
+    if (!g.byDay.has(s.date)) g.byDay.set(s.date, []);
+    g.byDay.get(s.date).push(s);
+  });
+
+  // This week key
+  const now = new Date();
+  const thisWkStart = new Date(now); thisWkStart.setDate(now.getDate() - now.getDay());
+  const thisWk = toKey(thisWkStart);
+
+  const intensEmoji = { leve: '🌱', medio: '⚡', intenso: '🔥' };
+  const energyEmoji = ['😴', '😑', '😐', '😊', '🔥'];
+  const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+  el.innerHTML = '';
+  weekMap.forEach((group, wk) => {
+    const allSess = [...group.byDay.values()].flat();
+    const totalMins = allSess.reduce((a, s) => a + (s.minutes || 0), 0);
+    const totalPomos = allSess.reduce((a, s) => a + (s.pomodoros || 0), 0);
+    const isNow = wk === thisWk;
+
+    const h = Math.floor(totalMins / 60), m = totalMins % 60;
+    const durStr = h > 0 ? h + 'h' + (m > 0 ? m + 'min' : '') : m + 'min';
+
+    let weekLabel;
+    if (isNow) {
+      weekLabel = '📅 Esta semana';
+    } else {
+      const end = new Date(group.start); end.setDate(group.start.getDate() + 6);
+      weekLabel = group.start.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })
+        + ' – ' + end.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' });
+    }
+
+    const weekEl = document.createElement('div');
+    weekEl.className = 'map-week';
+    weekEl.innerHTML = `<div class="map-week-hd">
+      <div class="map-week-title">${weekLabel}</div>
+      <div class="map-week-meta">
+        <span class="map-week-stat">⏱ ${durStr}</span>
+        <span class="map-week-stat">🍅 ${totalPomos}</span>
+        <span class="map-week-stat">${allSess.length} sessões</span>
+      </div>
+    </div>`;
+
+    // Days sorted desc
+    const days = [...group.byDay.entries()].sort((a, b) => b[0] > a[0] ? 1 : -1);
+    days.forEach(([date, sessions]) => {
+      const dow = new Date(date + 'T12:00:00').getDay();
+      const dateObj = new Date(date + 'T12:00:00');
+      const dayLabel = date === TODAY
+        ? '◉ hoje'
+        : dayNames[dow] + ' ' + dateObj.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' });
+
+      const dayEl = document.createElement('div');
+      dayEl.className = 'map-day';
+      dayEl.innerHTML = `<div class="map-day-lbl">${dayLabel}</div>`;
+
+      sessions.forEach(s => {
+        const tids = s.topics || ['livre'];
+        const emojis = tids.map(id => { const t = TOPICS.find(x => x.id === id); return t ? t.emoji : '📝'; }).join('');
+        const labels = tids.map(id => { const t = TOPICS.find(x => x.id === id); return t ? t.label : id; }).join(' · ');
+        const sh = Math.floor((s.minutes || 0) / 60), sm = Math.round((s.minutes || 0) % 60);
+        const dur = sh > 0 ? sh + 'h' + (sm > 0 ? sm + 'min' : '') : sm + 'min';
+        const qual = s.quality ? '⭐'.repeat(s.quality) : '';
+        const intE = s.intensity ? (intensEmoji[s.intensity] || '') : '';
+        const eneE = s.energy ? energyEmoji[s.energy - 1] : '';
+
+        const sessEl = document.createElement('div');
+        sessEl.className = 'map-sess';
+        sessEl.innerHTML = `
+          <div class="map-sess-emoji">${emojis}</div>
+          <div class="map-sess-body">
+            <div class="map-sess-row">
+              <div class="map-sess-label">${labels}</div>
+              ${intE ? `<span class="chip n" style="padding:1px 5px;font-size:9px">${intE}</span>` : ''}
+              ${eneE ? `<span style="font-size:11px" title="energia">${eneE}</span>` : ''}
+              <div class="map-sess-dur">${dur}</div>
+              ${qual ? `<div class="map-sess-qual">${qual}</div>` : ''}
+            </div>
+            ${s.recall ? `<div class="map-sess-recall">${s.recall}</div>` : ''}
+          </div>`;
+        dayEl.appendChild(sessEl);
+      });
+      weekEl.appendChild(dayEl);
+    });
+    el.appendChild(weekEl);
+  });
 }
 
 function _renderSkillCards() {
