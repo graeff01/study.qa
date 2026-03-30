@@ -719,6 +719,159 @@ body::before{
   letter-spacing:.06em;text-transform:uppercase;transition:all .18s;
 }
 .journal-open-btn:hover{border-color:var(--brand-bd);color:var(--brand2)}
+
+/* ════════════════════════════
+   ENERGY SELECTOR
+════════════════════════════ */
+.energy-sel{display:flex;gap:6px;margin-bottom:12px;justify-content:center;align-items:center}
+.energy-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;margin-right:2px}
+.energy-btn{font-size:19px;cursor:pointer;opacity:.25;transition:all .18s;background:none;border:2px solid transparent;padding:3px 5px;border-radius:8px;line-height:1}
+.energy-btn.active{opacity:1;transform:scale(1.15);border-color:var(--line2);background:rgba(255,255,255,0.05)}
+.energy-btn:hover{opacity:.7}
+
+/* ════════════════════════════
+   IMPLEMENTATION INTENTION
+════════════════════════════ */
+.intention-card{
+  background:linear-gradient(135deg,rgba(59,130,246,0.07),rgba(99,102,241,0.04));
+  border:1px solid var(--brand-bd);border-radius:var(--r);
+  padding:14px 16px;margin-bottom:12px;
+}
+.intention-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:8px}
+.intention-title{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--brand2);text-transform:uppercase;letter-spacing:.1em}
+.intention-science{font-size:9px;color:var(--tx3);font-style:italic;text-align:right;line-height:1.4}
+.intention-row{display:flex;gap:6px;align-items:center}
+.intention-input{
+  flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--line2);border-radius:var(--r2);
+  padding:8px 12px;color:var(--tx);font-family:'IBM Plex Sans',sans-serif;font-size:12px;
+  outline:none;transition:border-color .18s;min-width:0;
+}
+.intention-input:focus{border-color:var(--brand-bd)}
+.intention-input::placeholder{color:var(--tx4)}
+.intention-time{
+  background:rgba(255,255,255,0.04);border:1px solid var(--line2);border-radius:var(--r2);
+  padding:8px 8px;color:var(--tx2);font-family:'IBM Plex Mono',monospace;font-size:12px;
+  outline:none;width:86px;flex-shrink:0;color-scheme:dark;transition:border-color .18s;
+}
+.intention-time:focus{border-color:var(--brand-bd)}
+.intention-save{
+  padding:8px 12px;border-radius:var(--r2);border:none;cursor:pointer;
+  background:var(--brand);color:#fff;flex-shrink:0;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.06em;
+  transition:all .18s;white-space:nowrap;
+}
+.intention-save:hover{background:var(--brand2)}
+.intention-set{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.intention-set-text{font-size:12px;color:var(--tx);font-weight:500;flex:1;min-width:0}
+.intention-set-meta{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--brand2);white-space:nowrap}
+.intention-clear{background:none;border:none;cursor:pointer;color:var(--tx3);font-size:13px;padding:2px 4px;border-radius:4px;transition:color .15s;flex-shrink:0}
+.intention-clear:hover{color:var(--danger)}
+
+/* ════════════════════════════
+   SPACED REPETITION BADGE
+════════════════════════════ */
+.sr-badge{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;padding:1px 6px;border-radius:4px;
+  background:rgba(234,179,8,.1);color:var(--warn2);border:1px solid rgba(234,179,8,.2);
+  margin-left:6px;white-space:nowrap;flex-shrink:0;
+}
+
+/* ════════════════════════════
+   INTERLEAVING NUDGE
+════════════════════════════ */
+.interleave-card{
+  background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.18);border-radius:var(--r);
+  padding:12px 14px;margin-bottom:12px;display:flex;align-items:flex-start;gap:10px;
+}
+.interleave-icon{font-size:17px;flex-shrink:0;margin-top:1px}
+.interleave-text{font-size:12px;color:var(--tx2);flex:1;line-height:1.5}
+.interleave-text b{color:var(--warn2)}
+.interleave-dismiss{background:none;border:none;cursor:pointer;color:var(--tx3);font-size:14px;padding:0 2px;flex-shrink:0;line-height:1}
+.interleave-dismiss:hover{color:var(--tx)}
+
+/* ════════════════════════════
+   ANALYTICS
+════════════════════════════ */
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.analytics-card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.analytics-card.full{grid-column:1/-1}
+.an-title{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+.an-best{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;color:var(--brand2);line-height:1;margin-bottom:3px}
+.an-sub{font-size:11px;color:var(--tx3)}
+.topic-bar{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.topic-bar:last-child{margin-bottom:0}
+.topic-bar-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tx2);width:80px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topic-bar-track{flex:1;height:6px;background:var(--bg3);border-radius:999px;overflow:hidden}
+.topic-bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--brand),var(--brand2));transition:width .8s ease}
+.topic-bar-val{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--tx3);width:30px;text-align:right;flex-shrink:0}
+.qt-bar{border-radius:2px 2px 0 0;background:var(--bg3);min-height:4px;transition:height .6s ease;width:100%}
+.qt-bar.filled{background:linear-gradient(to top,var(--brand),var(--go2))}
+
+/* ════════════════════════════
+   RECALL FIELD IN SUMMARY
+════════════════════════════ */
+.recall-section{border-top:1px solid var(--line);padding-top:14px;margin-bottom:16px}
+.recall-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--brand2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.recall-science{font-size:9px;color:var(--tx3);font-style:italic;text-transform:none;letter-spacing:0;font-weight:400}
+.recall-textarea{
+  width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--line2);border-radius:var(--r2);
+  padding:10px 12px;color:var(--tx);font-family:'IBM Plex Sans',sans-serif;font-size:12px;
+  resize:none;outline:none;transition:border-color .18s;
+}
+.recall-textarea:focus{border-color:var(--brand-bd)}
+.recall-textarea::placeholder{color:var(--tx4)}
+
+/* ════════════════════════════
+   PROGRESS REDESIGN
+════════════════════════════ */
+/* Overview cards */
+.prog-overview{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.prog-ov-card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;position:relative;overflow:hidden}
+.prog-ov-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--ov-accent,var(--brand));opacity:.5}
+.prog-ov-title{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
+.prog-ov-val{font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:600;line-height:1;margin-bottom:7px}
+.prog-ov-bar{height:3px;background:var(--bg4);border-radius:999px;overflow:hidden}
+.prog-ov-fill{height:100%;border-radius:999px;transition:width 1.1s cubic-bezier(.4,0,.2,1)}
+
+/* Sub-tabs */
+.ptabs{display:flex;gap:3px;margin-bottom:14px;background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:3px}
+.ptab{
+  flex:1;padding:7px 4px;border-radius:6px;border:none;cursor:pointer;background:none;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--tx3);
+  letter-spacing:.04em;text-transform:uppercase;transition:all .18s;line-height:1.2;
+}
+.ptab.active{background:var(--bg4);color:var(--tx);border:1px solid var(--line2);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.ptab:hover:not(.active){color:var(--tx2)}
+.ptab-content{display:none}
+.ptab-content.active{display:block;animation:pgIn .22s ease both}
+
+/* EBAC phases */
+.ebac-phase{margin-bottom:16px}
+.ebac-phase-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.ebac-phase-name{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tx2);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.ebac-phase-pct{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tx3)}
+.ebac-phase-bar{height:3px;background:var(--bg4);border-radius:999px;overflow:hidden;margin-bottom:8px}
+.ebac-phase-fill{height:100%;border-radius:999px;transition:width .9s ease}
+
+/* Compact schedule */
+.sched-compact{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:12px}
+.sched-row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--line)}
+.sched-row:last-child{border-bottom:none}
+.sched-row.today-row{background:rgba(59,130,246,.05)}
+.sched-dow{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--tx3);width:30px;flex-shrink:0}
+.sched-dow.td{color:var(--brand2)}
+.sched-tasks{display:flex;gap:4px;flex:1;flex-wrap:wrap;align-items:center}
+.sched-h{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tx3);white-space:nowrap;margin-left:auto;padding-left:6px}
+.sched-h.met{color:var(--go2)}
+
+/* Timeline collapsible */
+.tl-collapser{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:6px 2px;user-select:none;margin-bottom:4px}
+.tl-collapser:hover .tl-col-lbl{color:var(--tx2)}
+.tl-col-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;gap:6px;transition:color .15s}
+.tl-col-arr{color:var(--tx3);transition:transform .22s;font-size:11px}
+.tl-col-arr.open{transform:rotate(90deg)}
+.tl-collapsible{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.tl-collapsible.open{max-height:2000px}
 </style>
 </head>
 <body>
@@ -786,6 +939,9 @@ body::before{
     </div>
     <button class="checkin-btn" id="cibtn" onclick="checkToday()">CHECK-IN</button>
   </div>
+
+  <!-- Implementation Intention -->
+  <div class="intention-card" id="intentionCard"></div>
 
   <!-- Countdown -->
   <div class="countdown-card" id="countdownCard" style="display:none">
@@ -885,6 +1041,9 @@ body::before{
   </button>
 
   <div class="timer-wrap">
+    <!-- Energy selector (pré-sessão) -->
+    <div class="energy-sel" id="energySel"></div>
+
     <!-- Intensity selector -->
     <div class="intensity-sel" id="intensitySel"></div>
 
@@ -948,6 +1107,16 @@ body::before{
       <div class="sec-label" style="margin-top:20px">Últimas sessões</div>
     </div>
 
+    <!-- Interleaving nudge -->
+    <div id="interleavingNudge" class="interleave-card" style="display:none;width:100%;max-width:380px">
+      <div class="interleave-icon">🔀</div>
+      <div class="interleave-text">
+        <b>Intercalação científica:</b> Você estudou <b id="interleaveTopicName"></b> várias vezes seguidas.
+        Alternar tópicos melhora a retenção a longo prazo.
+      </div>
+      <button class="interleave-dismiss" onclick="dismissInterleave()">✕</button>
+    </div>
+
     <!-- Daily journal button -->
     <button class="journal-open-btn" onclick="openJournal()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
@@ -980,6 +1149,11 @@ body::before{
       <div class="summary-grid" id="sumGrid"></div>
       <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tx3);text-align:center;margin-bottom:10px" id="sumMode"></div>
       <div class="sum-topics" id="sumTopics"></div>
+      <div class="recall-section">
+        <div class="recall-label">🧠 Active Recall <span class="recall-science">— técnica #1 de retenção (+50%)</span></div>
+        <textarea class="recall-textarea" id="recallInput" rows="2"
+          placeholder="O que você aprendeu nessa sessão? Escreva sem olhar as notas..."></textarea>
+      </div>
       <button class="modal-btn primary" onclick="closeQualModal()">Continuar</button>
     </div>
   </div>
@@ -999,26 +1173,39 @@ body::before{
 
 <!-- ═══ PROGRESS ═══ -->
 <div class="page" id="pg-progress">
-  <div class="page-title">Progresso</div>
-  <div class="page-sub">Operation CTFL · 12 meses</div>
 
-  <div class="sec-label">Linha do tempo</div>
-  <div class="card" style="padding:14px;margin-bottom:12px">
-    <div class="mgrid" id="mgrid"></div>
-    <div style="font-size:10px;color:var(--tx3);font-family:'IBM Plex Mono',monospace;margin-top:8px">Toque num mês para marcar como concluído</div>
+  <!-- Overview strip -->
+  <div class="prog-overview" id="progOverview"></div>
+
+  <!-- Sub-tabs -->
+  <div class="ptabs">
+    <button class="ptab active" id="pt-skills" onclick="showPTab('skills',this)">Habilidades</button>
+    <button class="ptab" id="pt-ebac"   onclick="showPTab('ebac',this)">EBAC</button>
+    <button class="ptab" id="pt-agenda" onclick="showPTab('agenda',this)">Agenda</button>
+    <button class="ptab" id="pt-data"   onclick="showPTab('data',this)">Analytics</button>
   </div>
 
-  <div class="sec-label">Skills — checklist</div>
-  <div id="skillCards"></div>
+  <!-- Tab: Habilidades -->
+  <div class="ptab-content active" id="ptab-skills">
+    <div id="skillCards"></div>
+  </div>
 
-  <div class="sec-label">Módulos EBAC</div>
-  <div class="card" id="ebacmods"></div>
+  <!-- Tab: EBAC -->
+  <div class="ptab-content" id="ptab-ebac">
+    <div id="mgrid-wrap"></div>
+    <div id="ebacmods"></div>
+  </div>
 
-  <div class="sec-label" style="margin-top:12px">Cronograma semanal</div>
-  <div id="wksched"></div>
+  <!-- Tab: Agenda -->
+  <div class="ptab-content" id="ptab-agenda">
+    <div id="wksched"></div>
+    <div id="tlcont-wrap"></div>
+  </div>
 
-  <div class="sec-label" style="margin-top:16px">Timeline 12 meses</div>
-  <div class="tl" id="tlcont"></div>
+  <!-- Tab: Analytics -->
+  <div class="ptab-content" id="ptab-data">
+    <div id="analyticsSection"></div>
+  </div>
 </div>
 
 <!-- ═══ ACHIEVEMENTS ═══ -->
@@ -1192,6 +1379,8 @@ function loadData() {
   if (d) {
     if (!d.journals) d.journals = [];
     if (!d.longBreakDuration || d.longBreakDuration < 20) d.longBreakDuration = 20;
+    if (d.lastBackup === undefined) d.lastBackup = null;
+    if (d.intention === undefined) d.intention = null;
   }
   return d || {
     studied: [],
@@ -1208,6 +1397,8 @@ function loadData() {
     breakDuration: 5,
     longBreakDuration: 20,
     notifEnabled: false,
+    lastBackup: null,
+    intention: null,
   };
 }
 
@@ -1230,6 +1421,7 @@ const TOPICS = [
   {id:'perf', label:'Performance', emoji:'📊'},
   {id:'mobile', label:'Mobile', emoji:'📱'},
   {id:'livre', label:'Livre', emoji:'📝'},
+  {id:'english', label:'English', emoji:'🇬🇧'},
 ];
 
 // ═══════════════════════════════════════════════════
@@ -1585,6 +1777,7 @@ function renderHome() {
   document.getElementById('rdSkills').textContent = Math.round(skillPct * 100) + '%';
 
   renderHeatmap();
+  renderIntention();
 }
 
 function renderWeekChart(weekH) {
@@ -1707,6 +1900,7 @@ let TS = {
   sessionMins: 0,
   intensity: 'medio',
   cdInt: null,
+  preEnergy: 3,
 };
 
 function initTimer() {
@@ -1716,6 +1910,7 @@ function initTimer() {
   TS.onBreak = false;
   setPlayState(false);
   updateTimerUI();
+  renderEnergy();
   renderIntensity();
   renderTopics();
   renderPomoDots();
@@ -1821,6 +2016,7 @@ function tToggle() {
     clearInterval(TS.int); clearInterval(TS.mint);
     TS.run = false;
     setPlayState(false);
+    _releaseWakeLock();
     return;
   }
   // Cancel countdown if active
@@ -1840,6 +2036,7 @@ function tToggle() {
 
 function _doStart() {
   setPlayState(true);
+  _requestWakeLock();
   if (!TS.sessionStart && !TS.onBreak) TS.sessionStart = Date.now();
   if (!TS.onBreak) motiv([{t:'FOCO. INICIADO.',c:'#60a5fa'}]);
   else motiv([{t:'PAUSA. DESCANSE.',c:'#4ade80'}]);
@@ -1902,6 +2099,7 @@ function _doStart() {
         updateTimerUI();
         renderPomoDots();
         checkBadges();
+        checkInterleaving();
         renderHome();
         renderSessionHistory();
       }
@@ -1912,6 +2110,7 @@ function _doStart() {
 function tReset() {
   clearInterval(TS.int); clearInterval(TS.mint);
   clearInterval(TS.cdInt); TS.cdInt = null;
+  _releaseWakeLock();
   document.getElementById('cdOverlay').style.display = 'none';
   document.getElementById('tMainBtn').style.opacity = '';
   TS.onBreak = false;
@@ -1942,7 +2141,9 @@ function saveSession(mins) {
     minutes: mins,
     pomodoros: 1,
     intensity: TS.intensity || 'medio',
+    energy: TS.preEnergy || null,
     quality: null,
+    recall: null,
     ts: Date.now(),
   };
   showQualModal(sessionData);
@@ -2088,6 +2289,13 @@ function _showSummaryStep(s) {
 }
 
 function closeQualModal() {
+  // Save active recall text to the last saved session
+  const recallEl = document.getElementById('recallInput');
+  if (recallEl && recallEl.value.trim() && D.sessions.length) {
+    const last = D.sessions[D.sessions.length - 1];
+    if (last && last.recall === null) { last.recall = recallEl.value.trim(); save(); }
+  }
+  if (recallEl) recallEl.value = '';
   document.getElementById('qualModal').classList.remove('show');
   _pendingSess = null;
   checkBadges(); renderHome(); renderSessionHistory();
@@ -2161,6 +2369,7 @@ const BALLOON_DATA = [
   {text:'ISTQB CHEGANDO 📋',      grad:'linear-gradient(135deg,#3b82f6,#f59e0b)', tip:'#3b82f6'},
   {text:'MODO DEUS ATIVADO 👑',   grad:'linear-gradient(135deg,#facc15,#f59e0b)', tip:'#facc15'},
   {text:'CÓDIGO + QUALIDADE 🛠️',  grad:'linear-gradient(135deg,#22c55e,#6366f1)', tip:'#22c55e'},
+  {text:'ENGLISH ON THE RISE 🇬🇧',  grad:'linear-gradient(135deg,#3b82f6,#1d4ed8)', tip:'#3b82f6'},
 ];
 
 function showBalloon(text, grad, inFS) {
@@ -2236,39 +2445,75 @@ document.addEventListener('keydown', e => {
 });
 
 // ═══════════════════════════════════════════════════
-// PROGRESS
+// PROGRESS — modular redesign
 // ═══════════════════════════════════════════════════
-function renderProgress() {
-  // Months grid
-  const mg = document.getElementById('mgrid'); mg.innerHTML = '';
-  for (let i = 0; i < 12; i++) {
-    const el = document.createElement('div');
-    el.className = 'mitem' + (D.monthsDone.includes(i)?' done':'') + (i===0?' curr':'');
-    el.innerHTML = `<div class="mn">${i+1}</div><div class="ml">${i===11?'CTFL':'mês'}</div>`;
-    el.onclick = () => {
-      const x = D.monthsDone.indexOf(i);
-      x>=0 ? D.monthsDone.splice(x,1) : D.monthsDone.push(i);
-      save(); renderProgress(); renderHome(); checkBadges();
-    };
-    mg.appendChild(el);
-  }
+function showPTab(id, btn) {
+  document.querySelectorAll('.ptab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+  const content = document.getElementById('ptab-' + id);
+  if (content) content.classList.add('active');
+  btn.classList.add('active');
+  if (id === 'data') renderAnalytics();
+}
 
-  // Skills with checklists
-  const sc = document.getElementById('skillCards'); sc.innerHTML = '';
+function renderProgress() {
+  _renderProgOverview();
+  _renderSkillCards();
+  _renderMonthsGrid();
+  _renderEbacPhases();
+  _renderCompactSchedule();
+  _renderTimeline();
+  renderAnalytics();
+}
+
+function _renderProgOverview() {
+  const el = document.getElementById('progOverview');
+  if (!el) return;
+  const totalH = getTotalHours();
+  const ebacDone = D.ebacDone.filter(Boolean).length;
+  const ebacPct = Math.round(ebacDone / 10 * 100);
+  const skillPct = Math.round(getAvgSkillCompletion() * 100);
+  const qualSess = D.sessions.filter(s => s.quality);
+  const qualAvg = qualSess.length ? qualSess.reduce((a, s) => a + s.quality, 0) / qualSess.length : 0;
+  const readiness = Math.round(ebacPct/100*35 + Math.min(1,totalH/500)*25 + skillPct/100*25 + qualAvg/5*15);
+
+  const items = [
+    {title:'Readiness',  val:readiness+'%',      pct:readiness,               color:'#3b82f6', accent:'var(--brand)'},
+    {title:'EBAC',       val:ebacDone+'/10',      pct:ebacPct,                 color:'#22c55e', accent:'var(--go)'},
+    {title:'Skills',     val:skillPct+'%',        pct:skillPct,                color:'#a78bfa', accent:'#8b5cf6'},
+    {title:'Horas',      val:totalH.toFixed(0)+'h', pct:Math.min(100,totalH/500*100), color:'#facc15', accent:'var(--warn)'},
+  ];
+  el.innerHTML = items.map(item => `
+    <div class="prog-ov-card" style="--ov-accent:${item.accent}">
+      <div class="prog-ov-title">${item.title}</div>
+      <div class="prog-ov-val" style="color:${item.color}">${item.val}</div>
+      <div class="prog-ov-bar"><div class="prog-ov-fill" style="width:0%;background:${item.accent}" data-p="${item.pct.toFixed(0)}"></div></div>
+    </div>`).join('');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    el.querySelectorAll('.prog-ov-fill').forEach(b => b.style.width = b.dataset.p + '%');
+  }));
+}
+
+function _renderSkillCards() {
+  const sc = document.getElementById('skillCards');
+  if (!sc) return;
+  sc.innerHTML = '';
   SKILL_DATA.forEach(skill => {
     const checks = D.skillChecks[skill.id] || [];
     const pct = Math.round(checks.length / skill.items.length * 100);
+    const daysSince = getDaysSince(getSkillLastStudied(skill.id));
+    const srBadge = (pct > 0 && pct < 100 && daysSince >= 3)
+      ? `<span class="sr-badge">📅 revisar (${daysSince}d)</span>` : '';
     const card = document.createElement('div');
     card.className = 'skill-card';
     card.innerHTML = `
       <div class="skill-header" onclick="toggleSkill('${skill.id}')">
-        <div class="skill-name"><span class="skill-arrow" id="arrow-${skill.id}">▸</span> ${skill.name}</div>
+        <div class="skill-name"><span class="skill-arrow" id="arrow-${skill.id}">▸</span> ${skill.name}${srBadge}</div>
         <div class="skill-pct">${pct}%</div>
       </div>
       <div class="skill-bar"><div class="skill-bar-fill" style="width:0%;background:${skill.color}" data-p="${pct}"></div></div>
       <div class="skill-items" id="items-${skill.id}"></div>`;
     sc.appendChild(card);
-
     const itemsEl = card.querySelector('.skill-items');
     skill.items.forEach((item, idx) => {
       const isDone = checks.includes(idx);
@@ -2286,34 +2531,109 @@ function renderProgress() {
       itemsEl.appendChild(row);
     });
   });
-
   requestAnimationFrame(() => requestAnimationFrame(() => {
     document.querySelectorAll('.skill-bar-fill').forEach(b => b.style.width = b.dataset.p + '%');
   }));
+}
 
-  // EBAC modules
-  const em = document.getElementById('ebacmods'); em.innerHTML = '';
-  MODS.forEach((m, i) => {
-    const d = document.createElement('div'); d.className = 'mod-item' + (D.ebacDone[i]?' done':'');
-    d.innerHTML = `<div class="mod-check">${D.ebacDone[i]?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>
-    <div class="mod-name">${m}</div><div class="mod-tag">M${i+1}</div>`;
-    d.onclick = () => { D.ebacDone[i] = !D.ebacDone[i]; save(); renderProgress(); renderHome(); checkBadges(); };
-    em.appendChild(d);
+function _renderMonthsGrid() {
+  const wrap = document.getElementById('mgrid-wrap');
+  if (!wrap) return;
+  const done = D.monthsDone.length;
+  wrap.innerHTML = `
+    <div class="card" style="padding:14px;margin-bottom:12px">
+      <div class="card-hd">
+        <div class="card-title">Linha do tempo — 12 meses</div>
+        <span class="chip ${done >= 12 ? 'g' : done >= 6 ? 'w' : 'b'}">${done}/12 meses</span>
+      </div>
+      <div class="mgrid" id="mgrid"></div>
+      <div style="font-size:10px;color:var(--tx3);font-family:'IBM Plex Mono',monospace;margin-top:8px">Toque num mês para marcar como concluído</div>
+    </div>`;
+  const mg = document.getElementById('mgrid');
+  for (let i = 0; i < 12; i++) {
+    const el = document.createElement('div');
+    el.className = 'mitem' + (D.monthsDone.includes(i) ? ' done' : '') + (i === 0 ? ' curr' : '');
+    el.innerHTML = `<div class="mn">${i+1}</div><div class="ml">${i===11?'CTFL':'mês'}</div>`;
+    el.onclick = () => {
+      const x = D.monthsDone.indexOf(i);
+      x >= 0 ? D.monthsDone.splice(x, 1) : D.monthsDone.push(i);
+      save(); renderProgress(); renderHome(); checkBadges();
+    };
+    mg.appendChild(el);
+  }
+}
+
+const EBAC_PHASES = [
+  {title:'Fundamentos',     color:'linear-gradient(90deg,var(--go),var(--go2))',       modules:[0,1]},
+  {title:'Automação',       color:'linear-gradient(90deg,var(--brand),var(--brand2))', modules:[2,3,4]},
+  {title:'Especialização',  color:'linear-gradient(90deg,#f59e0b,#facc15)',             modules:[5,6,7]},
+  {title:'Avançado + IA',   color:'linear-gradient(90deg,#8b5cf6,#a78bfa)',             modules:[8,9]},
+];
+
+function _renderEbacPhases() {
+  const el = document.getElementById('ebacmods');
+  if (!el) return;
+  el.innerHTML = '';
+  EBAC_PHASES.forEach(phase => {
+    const doneMods = phase.modules.filter(i => D.ebacDone[i]).length;
+    const pct = Math.round(doneMods / phase.modules.length * 100);
+    const wrap = document.createElement('div');
+    wrap.className = 'ebac-phase';
+    wrap.innerHTML = `
+      <div class="ebac-phase-hd">
+        <div class="ebac-phase-name">${phase.title}</div>
+        <div class="ebac-phase-pct">${doneMods}/${phase.modules.length}</div>
+      </div>
+      <div class="ebac-phase-bar"><div class="ebac-phase-fill" style="width:0%;background:${phase.color}" data-p="${pct}"></div></div>`;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.cssText = 'padding:0;margin-bottom:0';
+    phase.modules.forEach((modIdx, j) => {
+      const isDone = D.ebacDone[modIdx];
+      const row = document.createElement('div');
+      row.className = 'mod-item' + (isDone ? ' done' : '');
+      row.style.cssText = 'padding:10px 14px' + (j === phase.modules.length - 1 ? ';border-bottom:none' : '');
+      row.innerHTML = `
+        <div class="mod-check">${isDone ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>' : ''}</div>
+        <div class="mod-name">${MODS[modIdx]}</div>
+        <div class="mod-tag">M${modIdx+1}</div>`;
+      row.onclick = () => { D.ebacDone[modIdx] = !D.ebacDone[modIdx]; save(); renderProgress(); renderHome(); checkBadges(); };
+      card.appendChild(row);
+    });
+    wrap.appendChild(card);
+    el.appendChild(wrap);
   });
-
-  renderWeekSchedule();
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    el.querySelectorAll('.ebac-phase-fill').forEach(b => b.style.width = b.dataset.p + '%');
+  }));
 }
 
-function toggleSkill(id) {
-  const items = document.getElementById('items-' + id);
-  const arrow = document.getElementById('arrow-' + id);
-  items.classList.toggle('open');
-  arrow.classList.toggle('open');
+function _renderCompactSchedule() {
+  const el = document.getElementById('wksched');
+  if (!el) return;
+  const todow = new Date().getDay();
+  const weekH = getWeekHours();
+  el.innerHTML = '';
+  const card = document.createElement('div');
+  card.className = 'sched-compact';
+  SCHED.forEach((s, i) => {
+    const isT = i === todow;
+    const actual = weekH.find(d => d.dow === i);
+    const actualH = actual ? actual.mins / 60 : 0;
+    const met = !s.off && actualH >= s.total;
+    const row = document.createElement('div');
+    row.className = 'sched-row' + (isT ? ' today-row' : '');
+    const blocks = s.off
+      ? '<span class="wb off" style="font-size:10px">descanso</span>'
+      : s.blocks.map(b => `<span class="wb ${b.t}" style="font-size:10px">${b.l}</span>`).join('');
+    const hoursStr = s.off ? '' : `<div class="sched-h${met?' met':''}">${actualH.toFixed(1)}/${s.total}h</div>`;
+    row.innerHTML = `<div class="sched-dow${isT?' td':''}">${s.day}${isT?'◉':''}</div>
+      <div class="sched-tasks">${blocks}</div>${hoursStr}`;
+    card.appendChild(row);
+  });
+  el.appendChild(card);
 }
 
-// ═══════════════════════════════════════════════════
-// WEEK SCHEDULE
-// ═══════════════════════════════════════════════════
 const TL_DATA = [
   {p:'Meses 1–3', t:'Construção de base', dot:'#60a5fa',
    d:'Fundamentos QA, Agile/Scrum, Cypress básico com BDD. Portfólio público começa a crescer.',
@@ -2329,33 +2649,46 @@ const TL_DATA = [
    chips:[{l:'SonarQube',c:'b'},{l:'IA no QA',c:'b'},{l:'Simulados CTFL',c:'w'},{l:'Prova ISTQB',c:'w'},{l:'Portfólio completo',c:'g'}]},
 ];
 
-function renderWeekSchedule() {
-  const ws = document.getElementById('wksched'); ws.innerHTML = '';
-  const tdow = new Date().getDay();
-  SCHED.forEach((s, i) => {
-    const isT = i === tdow;
-    const card = document.createElement('div'); card.className = 'wcard';
-    const blocks = s.off
-      ? '<div class="wb off">domingo livre — descanso obrigatório</div>'
-      : s.blocks.map(b => `<div class="wb ${b.t}">${b.l} · ${b.h}</div>`).join('');
-    card.innerHTML = `<div class="wcard-head">
-      <div class="wday ${isT?'today':''}">${s.day}${isT?' ·◉':''}</div>
-      <div class="whours">${s.off ? 'descanso' : s.total+'h · '+s.label}</div>
-    </div><div class="wblocks">${blocks}</div>`;
-    ws.appendChild(card);
-  });
-
-  const tl = document.getElementById('tlcont'); tl.innerHTML = '';
+function _renderTimeline() {
+  const wrap = document.getElementById('tlcont-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = `
+    <div>
+      <div class="tl-collapser" onclick="_toggleTimeline()">
+        <div class="tl-col-lbl">▸ <span>Timeline 12 meses</span></div>
+        <span class="tl-col-arr" id="tlColArr">ver</span>
+      </div>
+      <div class="tl-collapsible" id="tlCollapsible">
+        <div class="tl" id="tlcont" style="margin-top:8px"></div>
+      </div>
+    </div>`;
+  const tl = document.getElementById('tlcont');
   TL_DATA.forEach(item => {
     const d = document.createElement('div'); d.className = 'tl-item';
     const chips = item.chips.map(c => `<span class="chip ${c.c}">${c.l}</span>`).join('');
     d.innerHTML = `<div class="tl-dot" style="background:${item.dot}"></div>
-    <div class="tl-period">${item.p}</div>
-    <div class="tl-title">${item.t}</div>
-    <div class="tl-desc">${item.d}</div>
-    <div class="chips">${chips}</div>`;
+      <div class="tl-period">${item.p}</div>
+      <div class="tl-title">${item.t}</div>
+      <div class="tl-desc">${item.d}</div>
+      <div class="chips">${chips}</div>`;
     tl.appendChild(d);
   });
+}
+
+function _toggleTimeline() {
+  const body = document.getElementById('tlCollapsible');
+  const arr = document.getElementById('tlColArr');
+  if (!body) return;
+  const opening = !body.classList.contains('open');
+  body.classList.toggle('open');
+  if (arr) arr.textContent = opening ? 'fechar' : 'ver';
+}
+
+function toggleSkill(id) {
+  const items = document.getElementById('items-' + id);
+  const arrow = document.getElementById('arrow-' + id);
+  if (items) items.classList.toggle('open');
+  if (arrow) arrow.classList.toggle('open');
 }
 
 // ═══════════════════════════════════════════════════
@@ -2446,6 +2779,7 @@ function sendNotification(title, body) {
 // EXPORT / IMPORT
 // ═══════════════════════════════════════════════════
 function exportData() {
+  D.lastBackup = TODAY; save();
   const blob = new Blob([JSON.stringify(D, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -2483,6 +2817,7 @@ function sp(id, btn) {
   document.getElementById('pg-'+id).classList.add('active');
   btn.classList.add('active');
   if (id === 'achieve') renderAchievements();
+  if (id === 'progress') renderProgress();
   if (id === 'timer') {
     requestAnimationFrame(() => {
       if (_tc) _resizeTimerCanvas();
@@ -2599,6 +2934,259 @@ function _drawTimerBg() {
   if (fsOn && _fsc && _fsx)   _renderWarp(_fsx,  _fsc.width, _fsc.height);
 }
 
+// ═══════════════════════════════════════════════════
+// WAKE LOCK — mantém tela acesa durante o timer
+// ═══════════════════════════════════════════════════
+let _wakeLock = null;
+async function _requestWakeLock() {
+  if (!('wakeLock' in navigator)) return;
+  try { _wakeLock = await navigator.wakeLock.request('screen'); } catch(e) {}
+}
+function _releaseWakeLock() {
+  if (_wakeLock) { _wakeLock.release().catch(()=>{}); _wakeLock = null; }
+}
+// Reacquire after tab becomes visible again (iOS/Android)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && TS.run) _requestWakeLock();
+});
+
+// ═══════════════════════════════════════════════════
+// ENERGY SELECTOR — nível pré-sessão (1-5)
+// ═══════════════════════════════════════════════════
+function renderEnergy() {
+  const el = document.getElementById('energySel');
+  if (!el) return;
+  el.innerHTML = '';
+  const lbl = document.createElement('span');
+  lbl.className = 'energy-lbl';
+  lbl.textContent = 'Energia:';
+  el.appendChild(lbl);
+  const opts = [
+    {emoji:'😴', label:'Exausta'},
+    {emoji:'😑', label:'Baixa'},
+    {emoji:'😐', label:'Normal'},
+    {emoji:'😊', label:'Boa'},
+    {emoji:'🔥', label:'Alta'},
+  ];
+  opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'energy-btn' + (TS.preEnergy === i+1 ? ' active' : '');
+    btn.textContent = opt.emoji;
+    btn.title = opt.label;
+    btn.onclick = () => { TS.preEnergy = i+1; renderEnergy(); };
+    el.appendChild(btn);
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// IMPLEMENTATION INTENTION — Gollwitzer (1999)
+// Escrever "Vou fazer X às Y no local Z" dobra a taxa de conclusão
+// ═══════════════════════════════════════════════════
+function renderIntention() {
+  const el = document.getElementById('intentionCard');
+  if (!el) return;
+  const today = D.intention && D.intention.date === TODAY ? D.intention : null;
+  if (today) {
+    el.innerHTML = `
+      <div class="intention-header">
+        <div class="intention-title">🎯 Compromisso de hoje</div>
+        <div class="intention-science">intenção de implementação ativa</div>
+      </div>
+      <div class="intention-set">
+        <div>
+          <div class="intention-set-text">${today.text}</div>
+          ${today.time ? `<div class="intention-set-meta">⏰ ${today.time}</div>` : ''}
+        </div>
+        <button class="intention-clear" onclick="clearIntention()" title="Remover">✕</button>
+      </div>`;
+  } else {
+    el.innerHTML = `
+      <div class="intention-header">
+        <div class="intention-title">🎯 Planejar sessão de hoje</div>
+        <div class="intention-science">↑2× taxa de conclusão (ciência)</div>
+      </div>
+      <div class="intention-row">
+        <input type="text" class="intention-input" id="intentionText"
+          placeholder='Ex: "Vou estudar Cypress por 2h"' maxlength="120">
+        <input type="time" class="intention-time" id="intentionTime">
+        <button class="intention-save" onclick="saveIntention()">Salvar</button>
+      </div>`;
+  }
+}
+
+function saveIntention() {
+  const text = (document.getElementById('intentionText')?.value || '').trim();
+  if (!text) { showToast('⚠️', 'Escreva seu plano de estudo antes de salvar'); return; }
+  const time = document.getElementById('intentionTime')?.value || '';
+  D.intention = { date: TODAY, text, time, ts: Date.now() };
+  save();
+  renderIntention();
+  showToast('🎯', 'Compromisso registrado! Agora vai.');
+}
+
+function clearIntention() {
+  D.intention = null; save(); renderIntention();
+}
+
+// ═══════════════════════════════════════════════════
+// SPACED REPETITION — Ebbinghaus forgetting curve
+// Mostra badge quando skill não foi estudada há 3+ dias
+// ═══════════════════════════════════════════════════
+function getSkillLastStudied(skillId) {
+  // Map skill ID to topic ID used in sessions
+  const topicMap = {cypress:'cypress', api:'api', cicd:'cicd', perf:'perf', mobile:'mobile', istqb:'ctfl'};
+  const topicId = topicMap[skillId];
+  if (!topicId) return null;
+  const matching = D.sessions.filter(s => (s.topics || []).includes(topicId));
+  if (!matching.length) return null;
+  return matching.reduce((latest, s) => s.date > latest ? s.date : latest, matching[0].date);
+}
+
+function getDaysSince(dateStr) {
+  if (!dateStr) return 999;
+  return Math.max(0, Math.floor((new Date(TODAY + 'T00:00:00') - new Date(dateStr + 'T00:00:00')) / 86400000));
+}
+
+// ═══════════════════════════════════════════════════
+// INTERLEAVING — Kornell & Bjork (2008)
+// Alternar tópicos melhora retenção a longo prazo
+// ═══════════════════════════════════════════════════
+function checkInterleaving() {
+  if (D.sessions.length < 3) return;
+  const recent = D.sessions.slice(-3);
+  const firstTopic = (recent[0].topics || [])[0];
+  if (!firstTopic) return;
+  const allSame = recent.every(s => (s.topics || [])[0] === firstTopic);
+  if (!allSame) return;
+  const el = document.getElementById('interleavingNudge');
+  if (!el) return;
+  const t = TOPICS.find(x => x.id === firstTopic);
+  document.getElementById('interleaveTopicName').textContent = t ? t.label : firstTopic;
+  el.style.display = 'flex';
+}
+
+function dismissInterleave() {
+  const el = document.getElementById('interleavingNudge');
+  if (el) el.style.display = 'none';
+}
+
+// ═══════════════════════════════════════════════════
+// BACKUP REMINDER
+// ═══════════════════════════════════════════════════
+function checkBackupReminder() {
+  if (D.sessions.length < 3) return;
+  if (!D.lastBackup) {
+    setTimeout(() => showToast('💾', 'Dica: faça um backup em Config → Exportar'), 4000);
+    return;
+  }
+  const days = getDaysSince(D.lastBackup);
+  if (days >= 7) {
+    setTimeout(() => showToast('💾', `Backup há ${days} dias — atualize em Config → Exportar`), 4000);
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// ANALYTICS — padrões de estudo
+// ═══════════════════════════════════════════════════
+function renderAnalytics() {
+  const el = document.getElementById('analyticsSection');
+  if (!el) return;
+  if (!D.sessions.length) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--tx3);padding:4px 0 12px">Registre sessões para ver seus padrões de estudo</div>';
+    return;
+  }
+
+  // Melhor dia da semana
+  const dayHours = Array(7).fill(0);
+  const dayCounts = Array(7).fill(0);
+  D.sessions.forEach(s => {
+    const dow = new Date(s.date + 'T12:00:00').getDay();
+    dayHours[dow] += (s.minutes || 0) / 60;
+    dayCounts[dow]++;
+  });
+  const dayNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const bestDow = dayHours.indexOf(Math.max(...dayHours));
+  const avgBestH = dayCounts[bestDow] ? dayHours[bestDow] / dayCounts[bestDow] : 0;
+
+  // Melhor horário (via timestamp)
+  const hourBuckets = Array(24).fill(0);
+  let hasHourData = false;
+  D.sessions.forEach(s => {
+    if (s.ts) { hourBuckets[new Date(s.ts).getHours()]++; hasHourData = true; }
+  });
+  const bestHour = hourBuckets.indexOf(Math.max(...hourBuckets));
+
+  // Distribuição por tópico
+  const topicMins = {};
+  D.sessions.forEach(s => {
+    (s.topics || ['livre']).forEach(id => {
+      topicMins[id] = (topicMins[id] || 0) + (s.minutes || 0);
+    });
+  });
+  const topicsSorted = Object.entries(topicMins).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const maxMins = Math.max(...topicsSorted.map(([,m]) => m), 1);
+
+  // Qualidade das últimas 4 semanas
+  const now = new Date();
+  const weekQuals = [];
+  for (let w = 3; w >= 0; w--) {
+    const ws = new Date(now); ws.setDate(now.getDate() - now.getDay() - w * 7); ws.setHours(0,0,0,0);
+    const we = new Date(ws); we.setDate(ws.getDate() + 6);
+    const k1 = toKey(ws), k2 = toKey(we);
+    const wSess = D.sessions.filter(s => s.quality && s.date >= k1 && s.date <= k2);
+    const avg = wSess.length ? wSess.reduce((a, s) => a + s.quality, 0) / wSess.length : 0;
+    weekQuals.push({ avg, label: w === 0 ? 'Esta' : `S-${w}` });
+  }
+  const maxQ = Math.max(...weekQuals.map(w => w.avg), 1);
+
+  el.innerHTML = `
+    <div class="analytics-grid">
+      <div class="analytics-card">
+        <div class="an-title">Melhor dia</div>
+        <div class="an-best">${dayNames[bestDow]}</div>
+        <div class="an-sub">${avgBestH.toFixed(1)}h em média</div>
+      </div>
+      <div class="analytics-card">
+        <div class="an-title">Melhor horário</div>
+        <div class="an-best">${hasHourData ? String(bestHour).padStart(2,'0')+'h' : '—'}</div>
+        <div class="an-sub">${hasHourData ? hourBuckets[bestHour]+' sessões' : 'dados insuficientes'}</div>
+      </div>
+      <div class="analytics-card full">
+        <div class="an-title">Horas por tópico</div>
+        ${topicsSorted.map(([id, mins]) => {
+          const t = TOPICS.find(x => x.id === id);
+          const label = t ? t.emoji + ' ' + t.label : id;
+          const pct = Math.round(mins / maxMins * 100);
+          const h = (mins / 60).toFixed(1);
+          return `<div class="topic-bar">
+            <div class="topic-bar-lbl">${label}</div>
+            <div class="topic-bar-track"><div class="topic-bar-fill" style="width:0%" data-p="${pct}"></div></div>
+            <div class="topic-bar-val">${h}h</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="analytics-card full">
+        <div class="an-title">Qualidade média — últimas 4 semanas</div>
+        <div style="display:flex;align-items:flex-end;gap:6px;height:56px;margin-bottom:6px">
+          ${weekQuals.map(w => {
+            const h = maxQ > 0 ? (w.avg / maxQ * 100) : 0;
+            return `<div style="flex:1;height:100%;display:flex;align-items:flex-end">
+              <div class="qt-bar ${w.avg > 0 ? 'filled' : ''}" style="height:${h}%"></div>
+            </div>`;
+          }).join('')}
+        </div>
+        <div style="display:flex;gap:6px">
+          ${weekQuals.map(w => `<div style="flex:1;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--tx3);text-align:center">${w.avg > 0 ? w.avg.toFixed(1)+'★' : '—'}<br>${w.label}</div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+
+  // Animate topic bars after render
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    el.querySelectorAll('.topic-bar-fill').forEach(b => b.style.width = b.dataset.p + '%');
+  }));
+}
+
 // Resize + fullscreen change handler
 function _onViewportChange() {
   _resizeTimerCanvas(); // handles both _tc and _fsc
@@ -2615,6 +3203,7 @@ function renderAll() {
   renderSessionHistory();
   renderProgress();
   renderAchievements();
+  checkBackupReminder();
 
   // Settings UI
   document.getElementById('pomoNum').textContent = D.pomoDuration;
