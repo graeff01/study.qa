@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check \"c:\\\\Users\\\\Auxiliadora Predial\\\\Desktop\\\\study.qa\\\\qa-pwa\\\\index.html\")"
+    ]
+  }
+}
