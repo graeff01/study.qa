@@ -266,6 +266,7 @@ body::before{
 .tag-item-label{flex:1;font-size:13px;color:var(--tx)}
 .tag-del-btn{background:none;border:none;cursor:pointer;color:var(--tx4);font-size:14px;padding:2px 6px;border-radius:4px;transition:all .18s}
 .tag-del-btn:hover{color:var(--danger);background:rgba(239,68,68,.1)}
+.tag-item-hidden{opacity:.6;background:rgba(255,255,255,.02)}
 .tag-add-row{display:flex;gap:8px;margin-top:4px}
 .tag-emoji-inp{width:44px;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:var(--r2);padding:7px 6px;font-size:14px;text-align:center;color:var(--tx)}
 .tag-name-inp{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:var(--r2);padding:7px 10px;font-size:12px;color:var(--tx);font-family:'IBM Plex Sans',sans-serif}
@@ -2101,7 +2102,24 @@ function initTimer() {
 }
 
 function _allTopics() {
-  return [...TOPICS, ...(D.customTopics || [])];
+  const hidden = D.hiddenTopics || [];
+  return [...TOPICS.filter(t => !hidden.includes(t.id)), ...(D.customTopics || [])];
+}
+
+function _toggleDefaultTag(id) {
+  if (!D.hiddenTopics) D.hiddenTopics = [];
+  const idx = D.hiddenTopics.indexOf(id);
+  if (idx >= 0) {
+    D.hiddenTopics.splice(idx, 1); // restore
+  } else {
+    D.hiddenTopics.push(id); // hide
+    // remove from active selection if needed
+    const si = TS.topics.indexOf(id);
+    if (si >= 0 && TS.topics.length > 1) TS.topics.splice(si, 1);
+  }
+  save();
+  _openTagEdit();
+  renderTopics();
 }
 
 function topicsLabel() {
@@ -2143,11 +2161,13 @@ function renderTopics() {
 function _openTagEdit() {
   const list = document.getElementById('tagEditList');
   list.innerHTML = '';
-  // Default tags (no delete)
+  const hidden = D.hiddenTopics || [];
+  // Default tags (toggleable)
   TOPICS.forEach(t => {
+    const isHidden = hidden.includes(t.id);
     const row = document.createElement('div');
-    row.className = 'tag-item';
-    row.innerHTML = `<span style="font-size:16px">${t.emoji}</span><span class="tag-item-label">${t.label}</span><span style="font-size:10px;color:var(--tx4)">padrão</span>`;
+    row.className = 'tag-item' + (isHidden ? ' tag-item-hidden' : '');
+    row.innerHTML = `<span style="font-size:16px;opacity:${isHidden?.4:1}">${t.emoji}</span><span class="tag-item-label" style="opacity:${isHidden?.4:1}">${t.label}</span><button class="tag-del-btn" onclick="_toggleDefaultTag('${t.id}')" title="${isHidden?'Restaurar':'Ocultar'}">${isHidden?'↩':'✕'}</button>`;
     list.appendChild(row);
   });
   // Custom tags (deletable)
@@ -3174,7 +3194,7 @@ function setCtflDate(val) {
 function resetD() {
   if (!confirm('Limpar todo o histórico? Essa ação não pode ser desfeita.')) return;
   D = {studied:[],monthsDone:[],ebacDone:Array(10).fill(false),hours:3,mintInterval:5,
-    sessions:[],skillChecks:{},badges:[],journals:[],ctflDate:'',pomoDuration:25,breakDuration:5,longBreakDuration:20,notifEnabled:false,weekPlan:null,customTopics:[]};
+    sessions:[],skillChecks:{},badges:[],journals:[],ctflDate:'',pomoDuration:25,breakDuration:5,longBreakDuration:20,notifEnabled:false,weekPlan:null,customTopics:[],hiddenTopics:[]};
   save(); renderAll();
 }
 
