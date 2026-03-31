@@ -3252,6 +3252,9 @@ function sp(id, btn) {
   if (id === 'achieve') renderAchievements();
   if (id === 'progress') renderProgress();
   if (id === 'timer') {
+    renderEnergy();
+    renderIntensity();
+    renderTopics();
     requestAnimationFrame(() => {
       if (_tc) _resizeTimerCanvas();
       else initTimerBg();
