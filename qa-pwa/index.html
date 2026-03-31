@@ -236,7 +236,7 @@ body::before{
 /* ════════════════════════════
    TIMER
 ════════════════════════════ */
-#pg-timer{position:relative;overflow:hidden;min-height:calc(100svh - 68px - var(--safe-bot) - var(--safe-top))}
+#pg-timer{position:relative;overflow-x:hidden;overflow-y:auto;min-height:calc(100svh - 68px - var(--safe-bot) - var(--safe-top))}
 
 /* Timer perspective canvas */
 #timerCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.9}
@@ -1468,17 +1468,6 @@ body::before{
     </div>
   </div>
 
-  <div class="scrd">
-    <div class="srow">
-      <div><div class="s-lb">Exportar dados</div><div class="s-sb">Baixar backup em JSON</div></div>
-      <button class="s-btn primary" onclick="exportData()">Exportar</button>
-    </div>
-    <div class="srow">
-      <div><div class="s-lb">Importar dados</div><div class="s-sb">Restaurar de backup JSON</div></div>
-      <button class="s-btn primary" onclick="document.getElementById('importFile').click()">Importar</button>
-      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
-    </div>
-  </div>
 
   <div class="scrd" id="profileSettingsCard">
     <div class="srow">
