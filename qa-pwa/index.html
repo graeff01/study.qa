@@ -900,6 +900,23 @@ body::before{
 }
 .user-avatar-btn:hover{transform:scale(1.1);box-shadow:0 0 0 2px rgba(255,255,255,.15)}
 .user-avatar-btn:active{transform:scale(.93)}
+/* Google Sign-In button */
+.google-btn{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:13px 20px;border-radius:var(--r);
+  background:#fff;border:none;cursor:pointer;
+  font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:500;color:#1f1f1f;
+  transition:all .18s;margin-bottom:12px;
+}
+.google-btn:hover{background:#f5f5f5;transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.google-btn:active{transform:translateY(0)}
+.login-note{font-size:11px;color:var(--tx4);line-height:1.6;margin-top:4px}
+/* Sync indicator */
+.sync-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;transition:background .3s}
+.sync-dot.ok{background:var(--go2)}
+.sync-dot.syncing{background:var(--warn2);animation:blink 1s infinite}
+.sync-dot.offline{background:var(--danger)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* ════════════════════════════
    PROGRESS REDESIGN
@@ -1002,20 +1019,14 @@ body::before{
 <!-- ═══ LOGIN / PROFILE SCREEN ═══ -->
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
-    <div class="login-logo" style="width:48px;height:48px;border-radius:12px;margin:0 auto 12px;background:linear-gradient(135deg,#3b82f6,#6366f1);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;color:#fff">QA</div>
+    <div style="width:48px;height:48px;border-radius:12px;margin:0 auto 12px;background:linear-gradient(135deg,#3b82f6,#6366f1);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;color:#fff">QA</div>
     <div class="login-title">QA Ops</div>
-    <div id="profileSelectSection">
-      <div class="login-sub">Quem está estudando?</div>
-      <div class="profile-list" id="profileList"></div>
-      <button class="login-new-btn" onclick="_showCreateForm()">+ Novo perfil</button>
-    </div>
-    <div id="profileCreateForm" style="display:none">
-      <div class="login-sub">Criar perfil</div>
-      <input type="text" class="login-input" id="newProfileName" placeholder="Seu nome" maxlength="20" onkeydown="if(event.key==='Enter')createProfile()">
-      <div class="color-picker" id="colorPicker"></div>
-      <button class="login-create-btn" onclick="createProfile()">Entrar</button>
-      <button class="login-back-btn" onclick="_hideCreateForm()">← Voltar</button>
-    </div>
+    <div class="login-sub" style="margin-bottom:28px">Sistema de estudos · QA Sênior</div>
+    <button class="google-btn" onclick="signInWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/></svg>
+      Entrar com Google
+    </button>
+    <div class="login-note">Seus dados ficam salvos na nuvem<br>e sincronizam em qualquer dispositivo</div>
   </div>
 </div>
 
@@ -1032,9 +1043,9 @@ body::before{
     </div>
   </div>
   <div class="topbar-right">
-    <div class="status-dot"></div>
+    <div class="sync-dot ok" id="syncDot" title="Sincronizado"></div>
     <div class="streak-chip">🔥 <b id="topSN">0</b> dias</div>
-    <button class="user-avatar-btn" id="userAvatarBtn" onclick="switchUser()" title="Trocar perfil" style="display:none"></button>
+    <button class="user-avatar-btn" id="userAvatarBtn" onclick="switchUser()" title="Sair" style="display:none"></button>
   </div>
 </div>
 
@@ -1432,8 +1443,8 @@ body::before{
 
   <div class="scrd" id="profileSettingsCard">
     <div class="srow">
-      <div><div class="s-lb">Perfil ativo</div><div class="s-sb" id="settingsProfileName">—</div></div>
-      <button class="s-btn primary" onclick="switchUser()">Trocar</button>
+      <div><div class="s-lb">Conta Google</div><div class="s-sb" id="settingsProfileName">—</div></div>
+      <button class="s-btn danger" onclick="switchUser()">Sair</button>
     </div>
   </div>
 
@@ -1484,6 +1495,10 @@ body::before{
     Config
   </button>
 </nav>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 
 <script>
 // ═══════════════════════════════════════════════════
@@ -1541,7 +1556,7 @@ function loadData() {
 }
 
 let D = {};
-const save = () => localStorage.setItem(K, JSON.stringify(D));
+const save = () => { localStorage.setItem(K, JSON.stringify(D)); _scheduleSync(); };
 const toKey = d => d.toISOString().split('T')[0];
 const TODAY = toKey(new Date());
 
@@ -3442,151 +3457,155 @@ window.addEventListener('resize', _onViewportChange);
 document.addEventListener('fullscreenchange', () => setTimeout(_onViewportChange, 80));
 
 // ═══════════════════════════════════════════════════
-// PROFILE / LOGIN SYSTEM
+// FIREBASE — AUTH + CLOUD SYNC
 // ═══════════════════════════════════════════════════
-const PROFILE_KEY = 'qaops_profiles';
-const ACTIVE_KEY  = 'qaops_active';
-const PROFILE_COLORS = ['#3b82f6','#6366f1','#8b5cf6','#ec4899','#f59e0b','#22c55e','#06b6d4','#ef4444'];
-let _selectedColor = PROFILE_COLORS[0];
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAkUEFVFBsRfJsCubzXf25ux_DxssmpNsM",
+  authDomain: "qa-ops-c8e7a.firebaseapp.com",
+  projectId: "qa-ops-c8e7a",
+  storageBucket: "qa-ops-c8e7a.firebasestorage.app",
+  messagingSenderId: "1058073266481",
+  appId: "1:1058073266481:web:2339a7302a6099b5af8810"
+};
+firebase.initializeApp(FIREBASE_CONFIG);
+const _auth = firebase.auth();
+const _db   = firebase.firestore();
+let _currentUser = null;
+let _syncTimer   = null;
 
-function getProfiles() {
-  try { return JSON.parse(localStorage.getItem(PROFILE_KEY)) || []; } catch(e){ return []; }
-}
-function saveProfiles(profiles) {
-  localStorage.setItem(PROFILE_KEY, JSON.stringify(profiles));
-}
-function getActiveProfileId() {
-  return localStorage.getItem(ACTIVE_KEY) || null;
-}
-function setActiveProfileId(id) {
-  localStorage.setItem(ACTIVE_KEY, id);
+// ── Auth ──────────────────────────────────────────
+function signInWithGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  _auth.signInWithPopup(provider).catch(() => {
+    showToast('⚠️', 'Erro ao entrar. Verifique o popup e tente novamente.');
+  });
 }
 
 function showLoginScreen() {
-  _renderLoginScreen();
   document.getElementById('loginScreen').classList.add('show');
 }
 function hideLoginScreen() {
   document.getElementById('loginScreen').classList.remove('show');
 }
 
-function _renderLoginScreen() {
-  const profiles = getProfiles();
-  const list = document.getElementById('profileList');
-  list.innerHTML = '';
-  profiles.forEach(p => {
-    const btn = document.createElement('button');
-    btn.className = 'profile-card';
-    btn.onclick = () => _enterApp(p);
-    btn.innerHTML = `<div class="profile-avatar" style="background:${p.color}">${p.name.charAt(0).toUpperCase()}</div><span class="profile-name">${p.name}</span>`;
-    list.appendChild(btn);
-  });
-  _hideCreateForm();
-}
-
-function _showCreateForm() {
-  document.getElementById('profileSelectSection').style.display = 'none';
-  document.getElementById('profileCreateForm').style.display = 'block';
-  _renderColorPicker();
-  document.getElementById('newProfileName').focus();
-}
-function _hideCreateForm() {
-  document.getElementById('profileSelectSection').style.display = 'block';
-  document.getElementById('profileCreateForm').style.display = 'none';
-  document.getElementById('newProfileName').value = '';
-}
-
-function _renderColorPicker() {
-  const cp = document.getElementById('colorPicker');
-  cp.innerHTML = '';
-  PROFILE_COLORS.forEach((c, i) => {
-    const dot = document.createElement('div');
-    dot.className = 'color-dot' + (i === 0 ? ' active' : '');
-    dot.style.background = c;
-    dot.style.border = '2px solid transparent';
-    dot.onclick = () => {
-      _selectedColor = c;
-      cp.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
-      dot.classList.add('active');
-    };
-    cp.appendChild(dot);
-  });
-  _selectedColor = PROFILE_COLORS[0];
-}
-
-function createProfile() {
-  const nameEl = document.getElementById('newProfileName');
-  const name = nameEl.value.trim();
-  if (!name) { nameEl.focus(); return; }
-  const profiles = getProfiles();
-  const id = 'u_' + Date.now();
-  const storageKey = 'qaops_v4_' + id;
-  const profile = { id, name, color: _selectedColor, storageKey };
-  profiles.push(profile);
-  saveProfiles(profiles);
-  _enterApp(profile);
-}
-
-function _enterApp(profile) {
-  setActiveProfileId(profile.id);
-  K = profile.storageKey;
-  D = loadData();
-  hideLoginScreen();
-  _renderTopbarAvatar(profile);
-  renderAll();
-}
-
-function _renderTopbarAvatar(profile) {
-  const btn = document.getElementById('userAvatarBtn');
-  btn.style.display = 'block';
-  btn.style.background = profile.color;
-  btn.title = profile.name + ' · Trocar perfil';
-  btn.textContent = profile.name.charAt(0).toUpperCase();
-  btn.style.fontSize = '10px';
-  btn.style.fontFamily = "'IBM Plex Mono', monospace";
-  btn.style.fontWeight = '700';
-  btn.style.color = '#fff';
-  // update logo sub
-  document.getElementById('logoSub').textContent = profile.name;
-  // update settings
-  const sn = document.getElementById('settingsProfileName');
-  if (sn) sn.textContent = profile.name;
-  const sf = document.getElementById('settingsFooter');
-  if (sf) sf.innerHTML = `QA OPS v4.0 · ${profile.name.toUpperCase()}<br>PUCRS ADS · EBAC · ISTQB CTFL<br>Dados salvos localmente no dispositivo`;
-}
-
 function switchUser() {
-  showLoginScreen();
+  _auth.signOut().then(() => {
+    D = {}; K = 'qaops_v4';
+    _setSyncStatus('ok');
+    showLoginScreen();
+  });
 }
 
 function _initApp() {
-  const profiles = getProfiles();
-  // First ever run: migrate existing data as "Douglas" profile
-  if (profiles.length === 0) {
-    const existing = localStorage.getItem('qaops_v4');
-    const id = 'u_douglas';
-    const storageKey = 'qaops_v4';
-    const profile = { id, name: 'Douglas', color: '#3b82f6', storageKey };
-    if (existing) {
-      // data already at 'qaops_v4', just register profile
-      profiles.push(profile);
-      saveProfiles(profiles);
-      setActiveProfileId(id);
-      _enterApp(profile);
+  _auth.onAuthStateChanged(user => {
+    if (user) {
+      _currentUser = user;
+      _onSignedIn(user);
     } else {
-      // brand new — show login to create first profile
+      _currentUser = null;
       showLoginScreen();
     }
-    return;
+  });
+}
+
+async function _onSignedIn(user) {
+  K = 'qaops_v4_' + user.uid;
+  D = loadData(); // carrega cache local primeiro (app abre rápido)
+  hideLoginScreen();
+  _renderTopbarUser(user);
+  renderAll();
+
+  // depois puxa a nuvem e mescla
+  _setSyncStatus('syncing');
+  try {
+    const doc = await _db.collection('users').doc(user.uid).get();
+    if (doc.exists) {
+      D = _mergeData(D, doc.data());
+      localStorage.setItem(K, JSON.stringify(D));
+      renderAll();
+    } else {
+      // primeira vez neste dispositivo — verifica migração de dados antigos
+      const legacy = localStorage.getItem('qaops_v4');
+      if (legacy) {
+        try { D = _mergeData(D, JSON.parse(legacy)); } catch(e) {}
+      }
+      await _db.collection('users').doc(user.uid).set(D);
+    }
+    _setSyncStatus('ok');
+  } catch(e) {
+    _setSyncStatus('offline');
   }
-  // Check if there's a remembered active profile
-  const activeId = getActiveProfileId();
-  if (activeId) {
-    const profile = profiles.find(p => p.id === activeId);
-    if (profile) { _enterApp(profile); return; }
+}
+
+// ── Merge de dados (sessões locais + nuvem) ───────
+function _mergeData(local, cloud) {
+  const sessMap = {};
+  [...(local.sessions||[]), ...(cloud.sessions||[])].forEach(s => {
+    sessMap[s.ts || (Math.random() + '')] = s;
+  });
+  const studiedSet = new Set([...(local.studied||[]), ...(cloud.studied||[])]);
+  return {
+    ...local, ...cloud,
+    sessions: Object.values(sessMap).sort((a,b) => (a.ts||0)-(b.ts||0)),
+    studied:  [...studiedSet],
+  };
+}
+
+// ── Sync para nuvem (debounce 2s após cada save) ──
+function _scheduleSync() {
+  if (!_currentUser) return;
+  clearTimeout(_syncTimer);
+  _setSyncStatus('syncing');
+  _syncTimer = setTimeout(async () => {
+    try {
+      await _db.collection('users').doc(_currentUser.uid).set(D);
+      _setSyncStatus('ok');
+    } catch(e) {
+      _setSyncStatus('offline');
+    }
+  }, 2000);
+}
+
+// Reconecta e sincroniza quando ficar online
+window.addEventListener('online', () => {
+  if (_currentUser) _scheduleSync();
+});
+
+function _setSyncStatus(status) {
+  const dot = document.getElementById('syncDot');
+  if (!dot) return;
+  dot.className = 'sync-dot ' + status;
+  dot.title = {ok:'Sincronizado ☁️', syncing:'Salvando...', offline:'Offline — salvo localmente'}[status] || '';
+}
+
+// ── Topbar & Settings ─────────────────────────────
+function _renderTopbarUser(user) {
+  const btn = document.getElementById('userAvatarBtn');
+  btn.style.display = 'flex';
+  btn.style.alignItems = 'center';
+  btn.style.justifyContent = 'center';
+  if (user.photoURL) {
+    btn.style.backgroundImage = `url(${user.photoURL})`;
+    btn.style.backgroundSize = 'cover';
+    btn.style.background = 'none';
+    btn.textContent = '';
+  } else {
+    btn.style.background = '#3b82f6';
+    btn.style.backgroundImage = 'none';
+    btn.textContent = (user.displayName || user.email || 'U').charAt(0).toUpperCase();
+    btn.style.fontSize = '10px';
+    btn.style.fontFamily = "'IBM Plex Mono',monospace";
+    btn.style.fontWeight = '700';
+    btn.style.color = '#fff';
   }
-  // Otherwise show login screen
-  showLoginScreen();
+  btn.title = (user.displayName || user.email) + ' · Clique para sair';
+  const name = user.displayName || user.email || 'Usuário';
+  const sub = document.getElementById('logoSub');
+  if (sub) sub.textContent = name;
+  const sn = document.getElementById('settingsProfileName');
+  if (sn) sn.textContent = user.email || name;
+  const sf = document.getElementById('settingsFooter');
+  if (sf) sf.innerHTML = `QA OPS v4.0 · ${name.toUpperCase()}<br>PUCRS ADS · EBAC · ISTQB CTFL<br>Dados sincronizados na nuvem ☁️`;
 }
 
 // ═══════════════════════════════════════════════════
