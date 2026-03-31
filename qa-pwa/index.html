@@ -255,6 +255,23 @@ body::before{
 }
 .topic-btn:hover{border-color:var(--line3);color:var(--tx2)}
 .topic-btn.active{background:var(--brand-bg);border-color:var(--brand-bd);color:var(--brand2)}
+.topic-edit-btn{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.04em;padding:5px 10px;border-radius:999px;background:none;border:1px dashed var(--line2);color:var(--tx4);cursor:pointer;transition:all .18s}
+.topic-edit-btn:hover{border-color:var(--brand-bd);color:var(--brand2)}
+/* Tag edit modal */
+.tag-edit-modal{display:none;position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,.7);align-items:center;justify-content:center;padding:20px}
+.tag-edit-modal.show{display:flex}
+.tag-edit-box{background:var(--bg2);border:1px solid var(--line2);border-radius:16px;padding:24px;width:100%;max-width:340px;max-height:75vh;overflow-y:auto}
+.tag-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.tag-item{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg3);border-radius:var(--r2);border:1px solid var(--line)}
+.tag-item-label{flex:1;font-size:13px;color:var(--tx)}
+.tag-del-btn{background:none;border:none;cursor:pointer;color:var(--tx4);font-size:14px;padding:2px 6px;border-radius:4px;transition:all .18s}
+.tag-del-btn:hover{color:var(--danger);background:rgba(239,68,68,.1)}
+.tag-add-row{display:flex;gap:8px;margin-top:4px}
+.tag-emoji-inp{width:44px;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:var(--r2);padding:7px 6px;font-size:14px;text-align:center;color:var(--tx)}
+.tag-name-inp{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:var(--r2);padding:7px 10px;font-size:12px;color:var(--tx);font-family:'IBM Plex Sans',sans-serif}
+.tag-emoji-inp:focus,.tag-name-inp:focus{border-color:var(--brand-bd);outline:none}
+.tag-add-submit{padding:7px 14px;border-radius:var(--r2);background:var(--brand);border:none;color:#fff;cursor:pointer;font-size:12px;font-weight:600;transition:all .18s}
+.tag-add-submit:hover{background:var(--brand2)}
 
 /* Pomodoro indicator */
 .pomo-dots{display:flex;gap:6px;margin-bottom:20px;align-items:center}
@@ -960,6 +977,20 @@ body::before{
 .sched-tasks{display:flex;gap:4px;flex:1;flex-wrap:wrap;align-items:center}
 .sched-h{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tx3);white-space:nowrap;margin-left:auto;padding-left:6px}
 .sched-h.met{color:var(--go2)}
+.sched-edit-btn{background:none;border:1px dashed var(--line2);border-radius:var(--r2);padding:4px 10px;font-size:10px;color:var(--tx3);cursor:pointer;margin-bottom:10px;transition:all .18s}
+.sched-edit-btn:hover{border-color:var(--brand-bd);color:var(--brand2)}
+.sched-edit-modal{display:none;position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,.7);align-items:center;justify-content:center;padding:20px}
+.sched-edit-modal.show{display:flex}
+.sched-edit-box{background:var(--bg2);border:1px solid var(--line2);border-radius:16px;padding:24px;width:100%;max-width:360px;max-height:80vh;overflow-y:auto}
+.sched-edit-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.sched-edit-row:last-child{border-bottom:none}
+.sched-edit-day{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--tx3);width:32px;flex-shrink:0}
+.sched-edit-input{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:var(--r2);padding:5px 8px;font-size:12px;color:var(--tx);font-family:'IBM Plex Sans',sans-serif}
+.sched-edit-input:focus{border-color:var(--brand-bd);outline:none}
+.sched-edit-h{width:40px;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:var(--r2);padding:5px 6px;font-size:12px;color:var(--tx);text-align:center;font-family:'IBM Plex Mono',monospace}
+.sched-edit-h:focus{border-color:var(--brand-bd);outline:none}
+.sched-off-tog{font-size:10px;color:var(--tx3);cursor:pointer;padding:4px 8px;border-radius:var(--r2);border:1px solid var(--line);background:none;transition:all .18s;white-space:nowrap}
+.sched-off-tog.active{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:var(--danger)}
 
 /* Timeline collapsible */
 .tl-collapser{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:6px 2px;user-select:none;margin-bottom:4px}
@@ -1115,15 +1146,6 @@ body::before{
     </div>
   </div>
 
-  <!-- Weekly hours chart -->
-  <div class="card">
-    <div class="card-hd">
-      <div class="card-title">Horas esta semana</div>
-      <span class="chip n" id="weekTotalH">0h</span>
-    </div>
-    <div class="wchart" id="wchartEl"></div>
-  </div>
-
   <div class="heatmap-card">
     <div class="card-hd">
       <div class="card-title">Presença — 24 semanas</div>
@@ -1146,20 +1168,6 @@ body::before{
       <div class="hm-lsq" style="background:var(--brand)"></div>
       <span>mais</span>
     </div>
-  </div>
-
-  <!-- Readiness -->
-  <div class="card readiness">
-    <div class="card-hd">
-      <div class="card-title">Readiness CTFL</div>
-      <span class="chip b" id="readinessPct">0%</span>
-    </div>
-    <div style="display:flex;gap:16px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tx3);margin-bottom:8px">
-      <span>📚 EBAC <b id="rdEbac" style="color:var(--tx2)">0%</b></span>
-      <span>⏱ Horas <b id="rdHours" style="color:var(--tx2)">0%</b></span>
-      <span>🛠 Skills <b id="rdSkills" style="color:var(--tx2)">0%</b></span>
-    </div>
-    <div class="readiness-bar"><div class="readiness-fill" id="readinessFill" style="width:0%;background:linear-gradient(90deg,var(--brand),var(--go))"></div></div>
   </div>
 
   <div class="info2">
@@ -1272,8 +1280,8 @@ body::before{
       <button class="interleave-dismiss" onclick="dismissInterleave()">✕</button>
     </div>
 
-    <!-- Daily journal button -->
-    <button class="journal-open-btn" onclick="openJournal()">
+    <!-- Daily journal button — shown only after completing a pomodoro -->
+    <button class="journal-open-btn" id="journalOpenBtn" onclick="openJournal()" style="display:none">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
       Registrar Dia
     </button>
@@ -1347,6 +1355,37 @@ body::before{
   <div class="ptab-content" id="ptab-agenda">
     <div id="wksched"></div>
     <div id="tlcont-wrap"></div>
+  </div>
+</div>
+
+<!-- ═══ TAG EDIT MODAL ═══ -->
+<div class="tag-edit-modal" id="tagEditModal">
+  <div class="tag-edit-box">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;margin-bottom:4px">Editar Tags</div>
+    <div style="font-size:11px;color:var(--tx3);margin-bottom:14px">Tags padrão + suas tags personalizadas</div>
+    <div class="tag-list" id="tagEditList"></div>
+    <div style="font-size:10px;color:var(--tx4);margin-bottom:8px;font-family:'IBM Plex Mono',monospace">+ NOVA TAG</div>
+    <div class="tag-add-row">
+      <input class="tag-emoji-inp" id="newTagEmoji" placeholder="📌" maxlength="2">
+      <input class="tag-name-inp" id="newTagName" placeholder="Nome da tag" maxlength="20" onkeydown="if(event.key==='Enter')_addCustomTag()">
+      <button class="tag-add-submit" onclick="_addCustomTag()">Add</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button class="login-create-btn" style="flex:1" onclick="_closeTagEdit()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AGENDA EDIT MODAL ═══ -->
+<div class="sched-edit-modal" id="schedEditModal">
+  <div class="sched-edit-box">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;margin-bottom:4px">Editar Agenda</div>
+    <div style="font-size:11px;color:var(--tx3);margin-bottom:16px">O que você planeja estudar cada dia</div>
+    <div id="schedEditRows"></div>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button class="login-create-btn" style="flex:1" onclick="_saveSchedEdit()">Salvar</button>
+      <button class="login-back-btn" style="padding:10px 16px;border:1px solid var(--line);border-radius:var(--r2)" onclick="_closeSchedEdit()">Cancelar</button>
+    </div>
   </div>
 </div>
 
@@ -2067,26 +2106,33 @@ function initTimer() {
   renderIntensity();
   renderTopics();
   renderPomoDots();
+  // Show journal button if already studied today
+  const jb = document.getElementById('journalOpenBtn');
+  if (jb) jb.style.display = D.sessions && D.sessions.some(s => s.date === TODAY) ? 'flex' : 'none';
+}
+
+function _allTopics() {
+  return [...TOPICS, ...(D.customTopics || [])];
 }
 
 function topicsLabel() {
   if (!TS.topics.length) return 'Nenhum tópico';
   return TS.topics.map(id => {
-    const t = TOPICS.find(x => x.id === id);
+    const t = _allTopics().find(x => x.id === id);
     return t ? t.emoji + ' ' + t.label : id;
   }).join(' · ');
 }
 
 function renderTopics() {
   const el = document.getElementById('topicSel'); el.innerHTML = '';
-  TOPICS.forEach(t => {
+  _allTopics().forEach(t => {
     const btn = document.createElement('button');
     btn.className = 'topic-btn' + (TS.topics.includes(t.id) ? ' active' : '');
     btn.textContent = t.emoji + ' ' + t.label;
     btn.onclick = () => {
       const idx = TS.topics.indexOf(t.id);
       if (idx >= 0) {
-        if (TS.topics.length > 1) TS.topics.splice(idx, 1); // keep at least 1
+        if (TS.topics.length > 1) TS.topics.splice(idx, 1);
       } else {
         TS.topics.push(t.id);
       }
@@ -2095,13 +2141,69 @@ function renderTopics() {
     };
     el.appendChild(btn);
   });
+  // Edit tags button
+  const editBtn = document.createElement('button');
+  editBtn.className = 'topic-edit-btn';
+  editBtn.textContent = '✏️';
+  editBtn.title = 'Editar tags';
+  editBtn.onclick = _openTagEdit;
+  el.appendChild(editBtn);
   updateTopicLabels();
+}
+
+function _openTagEdit() {
+  const list = document.getElementById('tagEditList');
+  list.innerHTML = '';
+  // Default tags (no delete)
+  TOPICS.forEach(t => {
+    const row = document.createElement('div');
+    row.className = 'tag-item';
+    row.innerHTML = `<span style="font-size:16px">${t.emoji}</span><span class="tag-item-label">${t.label}</span><span style="font-size:10px;color:var(--tx4)">padrão</span>`;
+    list.appendChild(row);
+  });
+  // Custom tags (deletable)
+  (D.customTopics || []).forEach(t => {
+    const row = document.createElement('div');
+    row.className = 'tag-item';
+    row.innerHTML = `<span style="font-size:16px">${t.emoji}</span><span class="tag-item-label">${t.label}</span><button class="tag-del-btn" onclick="_deleteCustomTag('${t.id}')">✕</button>`;
+    list.appendChild(row);
+  });
+  document.getElementById('newTagEmoji').value = '';
+  document.getElementById('newTagName').value = '';
+  document.getElementById('tagEditModal').classList.add('show');
+}
+
+function _addCustomTag() {
+  const emoji = document.getElementById('newTagEmoji').value.trim() || '📌';
+  const name = document.getElementById('newTagName').value.trim();
+  if (!name) { document.getElementById('newTagName').focus(); return; }
+  if (!D.customTopics) D.customTopics = [];
+  const id = 'custom_' + Date.now();
+  D.customTopics.push({id, label: name, emoji});
+  save();
+  _openTagEdit(); // refresh list
+  renderTopics();
+}
+
+function _deleteCustomTag(id) {
+  if (!D.customTopics) return;
+  D.customTopics = D.customTopics.filter(t => t.id !== id);
+  // remove from current selection if active
+  const idx = TS.topics.indexOf(id);
+  if (idx >= 0 && TS.topics.length > 1) TS.topics.splice(idx, 1);
+  save();
+  _openTagEdit();
+  renderTopics();
+}
+
+function _closeTagEdit() {
+  document.getElementById('tagEditModal').classList.remove('show');
 }
 
 function updateTopicLabels() {
   document.getElementById('tiDesc').textContent = topicsLabel();
   document.getElementById('fsMission').textContent = TS.topics.map(id => {
-    const t = TOPICS.find(x => x.id === id); return t ? t.label.toUpperCase() : id;
+    const t = _allTopics().find(x => x.id === id); return t ? t.label.toUpperCase() : id;
   }).join(' + ');
 }
 
@@ -2198,9 +2300,11 @@ function _doStart() {
   TS.mint = setInterval(() => {
     if (!document.getElementById('motivTog').classList.contains('on')) return;
     if (TS.onBreak) return;
+    const fs = document.getElementById('fsOverlay');
+    const timerActive = document.getElementById('pg-timer').classList.contains('active');
+    if (!fs.classList.contains('show') && !timerActive) return; // só exibe na tela do timer
     const idx = Math.floor(Math.random() * BALLOON_DATA.length);
     const bd = BALLOON_DATA[idx];
-    const fs = document.getElementById('fsOverlay');
     if (fs.classList.contains('show')) showBalloon(bd.text, bd.grad, true);
     else showBalloon(bd.text, bd.grad, false);
   }, mintMs);
@@ -2233,6 +2337,8 @@ function _doStart() {
         sendNotification('Pomodoro completo! 🍅', 'Hora da pausa.');
 
         if (!D.studied.includes(TODAY)) { D.studied.push(TODAY); save(); }
+        const jb = document.getElementById('journalOpenBtn');
+        if (jb) jb.style.display = 'flex';
 
         if (TS.pomoCount >= 4) {
           // Ultradian cycle complete — long break
@@ -2510,19 +2616,28 @@ function closeJournal() {
 // BALLOON MESSAGES
 // ═══════════════════════════════════════════════════
 const BALLOON_DATA = [
-  {text:'FOCO TOTAL 🧠',         grad:'linear-gradient(135deg,#3b82f6,#6366f1)', tip:'#3b82f6'},
-  {text:'VOCÊ ESTÁ EVOLUINDO ⚡', grad:'linear-gradient(135deg,#8b5cf6,#ec4899)', tip:'#8b5cf6'},
-  {text:'MAIS UM PASSO PRO CTFL 🏆', grad:'linear-gradient(135deg,#f59e0b,#ef4444)', tip:'#f59e0b'},
+  // Motivação científica e de alto impacto
+  {text:'FOCO TOTAL 🧠',                              grad:'linear-gradient(135deg,#3b82f6,#6366f1)', tip:'#3b82f6'},
+  {text:'VOCÊ ESTÁ EVOLUINDO ⚡',                     grad:'linear-gradient(135deg,#8b5cf6,#ec4899)', tip:'#8b5cf6'},
+  {text:'MAIS UM PASSO PRO CTFL 🏆',                  grad:'linear-gradient(135deg,#f59e0b,#ef4444)', tip:'#f59e0b'},
+  {text:'CONSISTÊNCIA BATE TALENTO 🎯',               grad:'linear-gradient(135deg,#22c55e,#06b6d4)', tip:'#22c55e'},
+  {text:'CADA SESSÃO CONSTRÓI O FUTURO 🚀',           grad:'linear-gradient(135deg,#6366f1,#8b5cf6)', tip:'#6366f1'},
+  {text:'SEU CÉREBRO ESTÁ GRAVANDO ISSO 💾',          grad:'linear-gradient(135deg,#ec4899,#f43f5e)', tip:'#ec4899'},
+  {text:'ESFORÇO HOJE = RESULTADO AMANHÃ ✨',         grad:'linear-gradient(135deg,#f59e0b,#fbbf24)', tip:'#f59e0b'},
+  {text:'DESCANSE DEPOIS. ESTUDE AGORA 🔥',           grad:'linear-gradient(135deg,#ef4444,#f97316)', tip:'#ef4444'},
+  {text:'CURVA DO APRENDIZADO: VOCÊ ESTÁ SUBINDO 📈', grad:'linear-gradient(135deg,#10b981,#34d399)', tip:'#10b981'},
+  {text:'DEEP WORK ATIVO 🎖️',                        grad:'linear-gradient(135deg,#3b82f6,#2563eb)', tip:'#3b82f6'},
+  {text:'DOPAMINA DO PROGRESSO EM 3... 2... 1... 🧪', grad:'linear-gradient(135deg,#a78bfa,#7c3aed)', tip:'#a78bfa'},
+  {text:'VOCÊ É SEU MAIOR INVESTIMENTO 💡',           grad:'linear-gradient(135deg,#fbbf24,#f59e0b)', tip:'#fbbf24'},
   {text:'QUALIDADE SE CONSTRÓI ASSIM 💎', grad:'linear-gradient(135deg,#22c55e,#3b82f6)', tip:'#22c55e'},
-  {text:'CONSISTÊNCIA > INTENSIDADE 🔥', grad:'linear-gradient(135deg,#ef4444,#f59e0b)', tip:'#ef4444'},
-  {text:'CADA MINUTO CONTA ⏱️',   grad:'linear-gradient(135deg,#3b82f6,#22c55e)', tip:'#3b82f6'},
-  {text:'DOUGLAS, CONTINUA 💪',   grad:'linear-gradient(135deg,#6366f1,#8b5cf6)', tip:'#6366f1'},
-  {text:'PORTFÓLIO CRESCENDO 🚀', grad:'linear-gradient(135deg,#f59e0b,#22c55e)', tip:'#f59e0b'},
-  {text:'FUTURO QA SÊNIOR ✨',    grad:'linear-gradient(135deg,#ec4899,#8b5cf6)', tip:'#ec4899'},
-  {text:'ISTQB CHEGANDO 📋',      grad:'linear-gradient(135deg,#3b82f6,#f59e0b)', tip:'#3b82f6'},
-  {text:'MODO DEUS ATIVADO 👑',   grad:'linear-gradient(135deg,#facc15,#f59e0b)', tip:'#facc15'},
-  {text:'CÓDIGO + QUALIDADE 🛠️',  grad:'linear-gradient(135deg,#22c55e,#6366f1)', tip:'#22c55e'},
-  {text:'ENGLISH ON THE RISE 🇬🇧',  grad:'linear-gradient(135deg,#3b82f6,#1d4ed8)', tip:'#3b82f6'},
+  {text:'CONSISTÊNCIA > INTENSIDADE 🔥',             grad:'linear-gradient(135deg,#ef4444,#f59e0b)', tip:'#ef4444'},
+  {text:'MODO DEUS ATIVADO 👑',                      grad:'linear-gradient(135deg,#facc15,#f59e0b)', tip:'#facc15'},
+  {text:'ENGLISH ON THE RISE 🇬🇧',                   grad:'linear-gradient(135deg,#3b82f6,#1d4ed8)', tip:'#3b82f6'},
+  {text:'MEMÓRIA SE FORMA NO DESCONFORTO 💪',         grad:'linear-gradient(135deg,#8b5cf6,#6366f1)', tip:'#8b5cf6'},
+  {text:'INTERLEAVING: TROCA O TÓPICO LOGO 🔀',      grad:'linear-gradient(135deg,#06b6d4,#3b82f6)', tip:'#06b6d4'},
+  {text:'SPACED REPETITION FUNCIONANDO ⏰',           grad:'linear-gradient(135deg,#f59e0b,#fbbf24)', tip:'#f59e0b'},
+  {text:'ACTIVE RECALL > RELEITURA PASSIVA 🎯',      grad:'linear-gradient(135deg,#22c55e,#10b981)', tip:'#22c55e'},
+  {text:'POMODORO = NEUROPLASTICIDADE EM AÇÃO 🔬',   grad:'linear-gradient(135deg,#ec4899,#a78bfa)', tip:'#ec4899'},
 ];
 
 function showBalloon(text, grad, inFS) {
@@ -2869,30 +2984,98 @@ function _renderEbacPhases() {
   }));
 }
 
+const DAYS_SHORT = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+function _getWeekPlan() {
+  if (D.weekPlan && D.weekPlan.length === 7) return D.weekPlan;
+  // Default from SCHED
+  return SCHED.map(s => ({
+    label: s.off ? '' : (s.blocks.map(b => b.l).join(' + ')),
+    hours: s.total,
+    off: !!s.off,
+  }));
+}
+
 function _renderCompactSchedule() {
   const el = document.getElementById('wksched');
   if (!el) return;
   const todow = new Date().getDay();
   const weekH = getWeekHours();
+  const plan = _getWeekPlan();
   el.innerHTML = '';
+
+  const editBtn = document.createElement('button');
+  editBtn.className = 'sched-edit-btn';
+  editBtn.textContent = '✏️ Editar agenda';
+  editBtn.onclick = _openSchedEdit;
+  el.appendChild(editBtn);
+
   const card = document.createElement('div');
   card.className = 'sched-compact';
-  SCHED.forEach((s, i) => {
+  plan.forEach((s, i) => {
     const isT = i === todow;
     const actual = weekH.find(d => d.dow === i);
     const actualH = actual ? actual.mins / 60 : 0;
-    const met = !s.off && actualH >= s.total;
+    const met = !s.off && s.hours > 0 && actualH >= s.hours;
     const row = document.createElement('div');
     row.className = 'sched-row' + (isT ? ' today-row' : '');
-    const blocks = s.off
-      ? '<span class="wb off" style="font-size:10px">descanso</span>'
-      : s.blocks.map(b => `<span class="wb ${b.t}" style="font-size:10px">${b.l}</span>`).join('');
-    const hoursStr = s.off ? '' : `<div class="sched-h${met?' met':''}">${actualH.toFixed(1)}/${s.total}h</div>`;
-    row.innerHTML = `<div class="sched-dow${isT?' td':''}">${s.day}${isT?'◉':''}</div>
-      <div class="sched-tasks">${blocks}</div>${hoursStr}`;
+    const label = s.off ? '<span class="wb off" style="font-size:10px">descanso</span>'
+      : s.label ? `<span class="wb" style="font-size:10px;background:var(--brand-bg);border-color:var(--brand-bd);color:var(--brand2)">${s.label}</span>` : '';
+    const hoursStr = s.off || !s.hours ? '' : `<div class="sched-h${met?' met':''}">${actualH.toFixed(1)}/${s.hours}h</div>`;
+    row.innerHTML = `<div class="sched-dow${isT?' td':''}">${DAYS_SHORT[i]}${isT?'◉':''}</div>
+      <div class="sched-tasks">${label}</div>${hoursStr}`;
     card.appendChild(row);
   });
   el.appendChild(card);
+}
+
+function _openSchedEdit() {
+  const plan = _getWeekPlan();
+  const rows = document.getElementById('schedEditRows');
+  rows.innerHTML = '';
+  plan.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'sched-edit-row';
+    row.innerHTML = `
+      <div class="sched-edit-day">${DAYS_SHORT[i]}</div>
+      <input class="sched-edit-input" id="se-label-${i}" placeholder="O que vai estudar..." value="${s.off ? '' : (s.label||'')}" ${s.off ? 'disabled' : ''}>
+      <input class="sched-edit-h" id="se-hours-${i}" type="number" min="0" max="12" step="0.5" value="${s.hours||0}" ${s.off ? 'disabled' : ''}>
+      <button class="sched-off-tog${s.off?' active':''}" id="se-off-${i}" onclick="_toggleSchedOff(${i})">${s.off?'off':'on'}</button>`;
+    rows.appendChild(row);
+  });
+  document.getElementById('schedEditModal').classList.add('show');
+}
+
+function _toggleSchedOff(i) {
+  const btn = document.getElementById(`se-off-${i}`);
+  const inp = document.getElementById(`se-label-${i}`);
+  const hrs = document.getElementById(`se-hours-${i}`);
+  const isOff = btn.classList.toggle('active');
+  btn.textContent = isOff ? 'off' : 'on';
+  inp.disabled = isOff;
+  hrs.disabled = isOff;
+}
+
+function _saveSchedEdit() {
+  const plan = DAYS_SHORT.map((_, i) => {
+    const offBtn = document.getElementById(`se-off-${i}`);
+    const off = offBtn && offBtn.classList.contains('active');
+    const labelEl = document.getElementById(`se-label-${i}`);
+    const hoursEl = document.getElementById(`se-hours-${i}`);
+    return {
+      label: off ? '' : (labelEl ? labelEl.value.trim() : ''),
+      hours: off ? 0 : parseFloat(hoursEl ? hoursEl.value : 0) || 0,
+      off,
+    };
+  });
+  D.weekPlan = plan;
+  save();
+  _closeSchedEdit();
+  _renderCompactSchedule();
+}
+
+function _closeSchedEdit() {
+  document.getElementById('schedEditModal').classList.remove('show');
 }
 
 const TL_DATA = [
@@ -3002,7 +3185,7 @@ function setCtflDate(val) {
 function resetD() {
   if (!confirm('Limpar todo o histórico? Essa ação não pode ser desfeita.')) return;
   D = {studied:[],monthsDone:[],ebacDone:Array(10).fill(false),hours:3,mintInterval:5,
-    sessions:[],skillChecks:{},badges:[],journals:[],ctflDate:'',pomoDuration:25,breakDuration:5,longBreakDuration:20,notifEnabled:false};
+    sessions:[],skillChecks:{},badges:[],journals:[],ctflDate:'',pomoDuration:25,breakDuration:5,longBreakDuration:20,notifEnabled:false,weekPlan:null,customTopics:[]};
   save(); renderAll();
 }
 
